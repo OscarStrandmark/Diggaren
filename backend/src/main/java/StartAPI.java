@@ -8,8 +8,10 @@ public class StartAPI {
         Spotify spotify = new Spotify();
         SR sr = new SR();
 
-        get("/",(request,response) -> {
+        get("/SR/CurrentlyPlaying",(request,response) -> {
+            response.header("Content-Type","application/json");
             return sr.getCurrentlyPlaying(request.attribute("channelID"));
         });
+
     }
 }
