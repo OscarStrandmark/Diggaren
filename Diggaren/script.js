@@ -41,4 +41,4 @@ audio.onplaying = function() {
 audio.onpause = function() {
   play = false;
 };
-$(".w-10 >a> #a").click(function(){$(this).toggleClass("fa-play-circle fa-pause-circle")})
+$("#a").click(function(){$(this).toggleClass("fa-play-circle fa-pause-circle")})

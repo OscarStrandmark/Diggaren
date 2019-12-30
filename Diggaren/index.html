@@ -8,33 +8,31 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" media="screen" href="style.css">
         <link rel="icon" href="bild.jpg">
-        <script src="script.js" defer></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="script.js" defer></script>
 
     </head>
     <body>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    
         <div class="topnav">
-            <a id="home" href="#home">M</a>
+            <a id="home" href="#home"></a>
             <!-- Navigation links (hidden by default) -->
             <div id="myLinks">
-              <a href="#news">P1</a>
-              <a href="#contact">P2</a>
-              <a href="#about">Logga in med Spotify </a>
+              <a href="#p1">P1</a>
+              <a href="#p2">P2</a>
+              <a href="#spotify">Logga in med Spotify </a>
             </div>
             <!-- "Hamburger menu" / "Bar icon" to toggle the navigation links -->
             <a href="javascript:void(0);" class="icon" onclick="myFunction()">
               <i class="fa fa-bars"></i>
             </a>
-          </div>
+        </div>
 
         <div class="spelas">
             <!-- Importerad play paus knapp-->
             
-                    <audio id="player2" src="https://www.bensound.com/bensound-music/bensound-summer.mp3"></audio>    
-                    <a onclick="toggle()"><i id="a" class="fa fa-play-circle fa-2x"></i></a>
+                <audio id="player2" src="https://www.bensound.com/bensound-music/bensound-summer.mp3"></audio>    
+                <a onclick="toggle()"><i id="a" class="fa fa-play-circle fa-2x"></i></a>
         
             Radiokanal som spelas
          </div>
@@ -70,7 +68,7 @@
                 </li>
                 <li class="flex-item">
                     <button type="button" class="collapsible">
-                        Song info
+                        Song information
                     </button>
                     <div class="content">
                         <p>Lorem ipsum...</p>
