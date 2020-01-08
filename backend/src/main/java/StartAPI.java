@@ -1,15 +1,17 @@
-import static spark.Spark.port;
-import static spark.Spark.get;
+import controllers.SpotifyGetPlaylist;
+
+import static spark.Spark.*;
 
 public class StartAPI {
     public static void main(String[] args) {
         port(5050);
 
-        Spotify spotify = new Spotify();
-        SR sr = new SR();
+        SpotifyGetPlaylist spotifyGetPlaylist = new SpotifyGetPlaylist();
 
-        get("/",(request,response) -> {
-            return sr.getCurrentlyPlaying(request.attribute("channelID"));
+
+        path("/spotify", () -> {
+            get("getPlaylist",((request, response) -> spotifyGetPlaylist.getPlayList(request.attribute("auth"))));
+
         });
     }
 }
