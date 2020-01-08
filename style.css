@@ -1,0 +1,154 @@
+
+ body{
+     background-color: rgb(174, 171, 171);
+ }
+
+ .title{
+     color: white;
+     text-align: center;
+     font-family: sans-serif;
+ }
+ /* Style the navigation menu */
+ .topnav {
+    overflow: hidden;
+    background-color: black;
+    position: relative;
+  }
+  
+  /* Hide the links inside the navigation menu (except for logo/home) */
+  .topnav #myLinks {
+    display: none;
+    color: black;
+  }
+  
+  /* Style navigation menu links */
+  .topnav a {
+    color: white;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+    display: block;
+  }
+  
+  /* Style the hamburger menu */
+  .topnav a.icon {
+    background: black;
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+    /* Add a grey background color on mouse-over */
+  .topnav a:hover {
+    background-color: #ddd;
+    color: black;
+  }
+
+  #home {
+      background-color: black;
+  }
+
+  /* Style the active link (or home/logo) */
+.active {
+    background-color: black;
+
+  }
+  .button {
+    background-color: rgb(20, 157, 20);
+    border: none;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 20px;
+    font-size: 14px;
+    font-family: sans-serif;
+  }
+  .button:hover {
+    background-color: rgb(95, 205, 95);
+  }
+button a {
+    color: white;
+    text-decoration: none;
+}
+/* Style the button that is used to open and close the collapsible content */
+.collapsible {
+    background-color: black;
+    color: white;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 18px;
+    text-align: center;
+  }
+  
+  /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+  .active, .collapsible:hover {
+    background-color: #ccc;
+  }
+  
+  /* Style the collapsible content. Note: hidden by default */
+  .content {
+    padding: 0 18px;
+    display: none;
+    overflow: hidden;
+    background-color: white;
+    text-align: center;
+  }
+
+  
+  /* Importerad play paus knapp */
+  
+  #a{
+      color: white;
+      padding: 5px;
+  }
+  
+  .spelas{
+      width: 100%;
+      background-color: grey;
+      height: 40px;
+  }
+
+
+  .flex-container {
+    display: flex;
+    padding: 0;
+    margin: 10;
+    list-style: none;
+    flex-direction: row;
+  }
+  .flex-item{
+      flex-grow: 1;
+      padding: 20px;
+  }
+
+/* Formatering för "knappen" */
+  /*.collapsible{
+
+    }*/
+/*Formatering för "lådan" */
+    /*.content{
+    
+    }*/
+    
+@media screen and (max-width: 600px) {
+    .flex-container{
+        flex-direction: column;
+    }
+
+    .flex-item{
+        padding: 0px;
+    }
+    
+  
+
+   
+    }
+}
+ 
