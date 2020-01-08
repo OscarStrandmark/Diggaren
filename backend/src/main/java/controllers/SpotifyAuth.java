@@ -1,16 +1,15 @@
-import com.google.gson.JsonObject;
+package controllers;
+
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 
-public class Spotify {
-
+public class SpotifyAuth {
     private String redirectURL = ""; //TODO:ADD URL
+
     /**
      * Request for auth code & scope confirmation in client
      *
@@ -44,21 +43,11 @@ public class Spotify {
         HttpEntity<MultiValueMap<String,String>> reqEntity = new HttpEntity<MultiValueMap<String, String>>(map,headers);
 
         try {
-         accessToken = template.postForObject("https://accounts.spotify.com/api/token",reqEntity,String.class);
+            accessToken = template.postForObject("https://accounts.spotify.com/api/token",reqEntity,String.class);
         }catch (RestClientResponseException e){
             e.printStackTrace();
         }
 
         return accessToken;
-    }
-
-    public String searchSong(String auth,String type,String query) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", auth);
-
-        HttpEntity<String> reqEntity = new HttpEntity<String>("",headers);
-        ResponseEntity<String> resEntity = new RestTemplate().exchange("https://api.spotify.com/v1/search", HttpMethod.GET, reqEntity, String.class);
-
-        return resEntity.getBody();
     }
 }
