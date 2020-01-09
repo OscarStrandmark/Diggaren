@@ -1,4 +1,4 @@
-import controllers.SpotifyGetPlaylist;
+import controllers.SpotifyGetPlaylistController;
 
 import static spark.Spark.*;
 
@@ -6,7 +6,7 @@ public class StartAPI {
     public static void main(String[] args) {
         port(5050);
 
-        SpotifyGetPlaylist spotifyGetPlaylist = new SpotifyGetPlaylist();
+        SpotifyGetPlaylistController spotifyGetPlaylist = new SpotifyGetPlaylistController();
 
 
         path("/spotify", () -> {
