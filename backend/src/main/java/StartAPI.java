@@ -1,3 +1,6 @@
+import controllers.SpotifyGetAlbum;
+import models.Message;
+
 import static spark.Spark.port;
 import static spark.Spark.get;
 
@@ -5,11 +8,21 @@ public class StartAPI {
     public static void main(String[] args) {
         port(5050);
 
-        Spotify spotify = new Spotify();
-        SR sr = new SR();
+        Message msg = new Message();
+        SpotifyGetAlbum get = new SpotifyGetAlbum();
+        port(5050);
 
-        get("/",(request,response) -> {
-            return sr.getCurrentlyPlaying(request.attribute("channelID"));
-        });
+        get("/album", (request, response) -> {
+            return get.getAlbum(msg);
+                });
+
+
+//        Spotify spotify = new Spotify();
+//        SR sr = new SR();
+//
+//        get("/",(request,response) -> {
+//            return sr.getCurrentlyPlaying(request.attribute("channelID"));
+//        });
+
     }
 }
