@@ -1,6 +1,9 @@
 import com.google.gson.Gson;
+import controllers.AudioFeaturesController;
 import controllers.RecommendationsController;
-import util.RecommendationMessage;
+import controllers.SRController;
+import util.SRMessage;
+import util.TrackMessage;
 
 import static spark.Spark.*;
 
@@ -8,16 +11,12 @@ public class StartAPI {
 
     public static void main(String[] args) {
 
-        //MARK: Testing ----------------------------------------------
-        RecommendationsController c = new RecommendationsController();
-        c.getRecommendation(new RecommendationMessage("BQCTmYsB3ElYD4gVnmqEzZ_mcQrQYK2e07jyO6yGRAiofEkm2qft1_Xld70o0v-7oY" +
-                "_qfRotBm0gyTw2KXC4Qel9Fz2lWF2X8zqf-srlvk_TGRnBbKROLFiBGkr2Vyev5mnYlHQy3JsTHQ",
-                "1TKYPzH66GwsqyJFKFkBHQ"));
-        //-------------------------------------------------------------
-
         Gson gson = new Gson();
 
+        //Controllers
         RecommendationsController recommendationsController = new RecommendationsController();
+        AudioFeaturesController audioFeaturesController = new AudioFeaturesController();
+        SRController srController = new SRController();
 
         port(5050);
 
@@ -28,11 +27,25 @@ public class StartAPI {
             return sr.getCurrentlyPlaying(request.attribute("channelID"));
         });
 
-
+        //MARK: Recommendations
         post("/recommendations", (request, response) -> {
             response.type("application/json"); //definiera svar som json
-            RecommendationMessage msg = gson.fromJson(request.body(), RecommendationMessage.class); //hämta json object från body som ett definierat objekt
+            TrackMessage msg = gson.fromJson(request.body(), TrackMessage.class); //hämta json object från body som ett definierat objekt
             return recommendationsController.getRecommendation(msg);
+        }, gson :: toJson);
+
+        //MARK: AudioFeatures
+        post("/audio_features", (request, response) -> {
+            response.type("application/json"); //definiera svar som json
+            TrackMessage msg = gson.fromJson(request.body(), TrackMessage.class); //hämta json object från body som ett definierat objekt
+            return audioFeaturesController.getAudioFeatures(msg);
+        }, gson :: toJson);
+
+        //MARK: SR spelas nu
+        post("/playing_song", (request, response) -> {
+            response.type("application/json"); //definiera svar som json
+            SRMessage msg = gson.fromJson(request.body(), SRMessage.class); //hämta json object från body som ett definierat objekt
+            return srController.getSongPlaying(msg);
         }, gson :: toJson);
     }
 }

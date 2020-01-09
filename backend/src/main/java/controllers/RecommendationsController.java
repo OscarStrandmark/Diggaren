@@ -1,17 +1,13 @@
 package controllers;
 
 import com.google.gson.*;
-import com.google.gson.reflect.TypeToken;
 import models.Recommendation;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
-import util.RecommendationMessage;
-
-import java.lang.reflect.Type;
-import java.util.*;
+import util.TrackMessage;
 
 
 public class RecommendationsController {
@@ -19,7 +15,7 @@ public class RecommendationsController {
     public RecommendationsController() {
     }
 
-    public Recommendation getRecommendation(RecommendationMessage msg) {
+    public Recommendation getRecommendation(TrackMessage msg) {
         //getting the recommendation from spotify API by sending GET req
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization","Bearer "+msg.getAuthorization());
@@ -34,11 +30,11 @@ public class RecommendationsController {
         //since the response is a nestled json object and we need to convert it to an map and fetch the wanted data
         JsonParser parser = new JsonParser();
         JsonObject trackInfo = parser.parse(resEntity.getBody()).getAsJsonObject().get("tracks").getAsJsonArray().get(0).getAsJsonObject(); //gets the one and only track from the response as an json object
-        String trackID = trackInfo.get("id").toString();
-        String trackName = trackInfo.get("name").toString();
+        String trackID = trackInfo.get("id").getAsString();
+        String trackName = trackInfo.get("name").getAsString();
         JsonObject artistInfo = trackInfo.getAsJsonArray("artists").get(0).getAsJsonObject();
-        String artistName = artistInfo.get("name").toString();
-        String artistID = artistInfo.get("id").toString();
+        String artistName = artistInfo.get("name").getAsString();
+        String artistID = artistInfo.get("id").getAsString();
 
         System.out.println("track id: " + trackID + "\ntrack name: " + trackName + "\nartist id: " + artistID + "\nartist name: " + artistName);
 

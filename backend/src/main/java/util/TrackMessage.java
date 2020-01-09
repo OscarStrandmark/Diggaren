@@ -1,13 +1,17 @@
 package util;
 
-public class RecommendationMessage {
+/**
+ * Represents JSON messages sent from client to server
+ *
+ * Can be used so far to pass messages from client for both
+ * Recommendations and AudioFeatures endpoints
+ *
+ */
+public class TrackMessage {
     private String authorization;
     private String trackID;
 
-    public RecommendationMessage() {
-    }
-
-    public RecommendationMessage(String authorization, String trackID) {
+    public TrackMessage(String authorization, String trackID) {
         this.authorization = authorization;
         this.trackID = trackID;
     }
