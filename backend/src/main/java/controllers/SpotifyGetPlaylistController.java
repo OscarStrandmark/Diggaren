@@ -8,7 +8,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-public class SpotifyGetPlaylistsController {
+public class SpotifyGetPlaylistController {
     public String getPlayList(String json) {
         SpotifyGetPlaylist getPlaylistData = new Gson().fromJson(json,SpotifyGetPlaylist.class);
         HttpHeaders headers = new HttpHeaders();
