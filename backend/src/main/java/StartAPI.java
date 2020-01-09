@@ -1,15 +1,23 @@
-import static spark.Spark.port;
-import static spark.Spark.get;
+import controllers.*;
+
+import static spark.Spark.*;
 
 public class StartAPI {
     public static void main(String[] args) {
         port(5050);
 
-        Spotify spotify = new Spotify();
-        SR sr = new SR();
+        SpotifyAddToPlaylistController spotifyAddToPlaylistController = new SpotifyAddToPlaylistController();
 
-        get("/",(request,response) -> {
-            return sr.getCurrentlyPlaying(request.attribute("channelID"));
+        path("/spotify", () -> {
+
+            //Playlist-endpoints
+            path("/playlist", () -> {
+                post("/addToPlaylist", (req,res) -> {
+                    return spotifyAddToPlaylistController.addToPlayList(req.body());
+                });
+            });
         });
+
+
     }
 }
