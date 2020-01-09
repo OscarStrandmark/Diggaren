@@ -1,5 +1,4 @@
 import controllers.*;
-
 import static spark.Spark.*;
 
 public class StartAPI {
@@ -7,17 +6,20 @@ public class StartAPI {
         port(5050);
 
         SpotifyAddToPlaylistController spotifyAddToPlaylistController = new SpotifyAddToPlaylistController();
-
+        AddToLibraryController addToLibraryController = new AddToLibraryController();
+      
         path("/spotify", () -> {
-
-            //Playlist-endpoints
+        //Search endpoints
+            path("/search", () -> {
+                get("/", (req,res) -> spotifySearch.search(req.params("auth"),req.params("type"),req.params("query")));
+            });
+            path("/library", () -> {
+                put("/addto", (req,res) -> addToLibraryController.addToLibrary(req.body()));
+            });
             path("/playlist", () -> {
                 post("/addToPlaylist", (req,res) -> {
                     return spotifyAddToPlaylistController.addToPlayList(req.body());
                 });
             });
-        });
-
-
     }
 }
