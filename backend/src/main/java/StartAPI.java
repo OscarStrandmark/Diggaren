@@ -1,4 +1,5 @@
 import controllers.SpotifySearch;
+import controllers.SpotifySearchController;
 
 import static spark.Spark.*;
 
@@ -6,7 +7,7 @@ public class StartAPI {
     public static void main(String[] args) {
         port(5050);
 
-        SpotifySearch spotifySearch = new SpotifySearch();
+        SpotifySearchController spotifySearch = new SpotifySearchController();
 
         path("/spotify", () -> {
 
