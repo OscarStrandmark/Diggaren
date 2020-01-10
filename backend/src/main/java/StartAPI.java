@@ -7,9 +7,7 @@ import util.TrackMessage;
 public class StartAPI {
 
     public static void main(String[] args) {
-
-
-        SpotifyGetAlbum get = new SpotifyGetAlbum();
+        
         port(5050);
         Gson gson = new Gson();
 
@@ -19,6 +17,7 @@ public class StartAPI {
         SpotifyGetPlaylistController spotifyGetPlaylist = new SpotifyGetPlaylistController();
         SpotifySearchController spotifySearchController = new SpotifySearchController();
         AudioFeaturesController audioFeaturesController = new AudioFeaturesController();
+        SpotifyGetAlbumController getAlbumController = new SpotifyGetAlbumController();
         AddToLibraryController addToLibraryController = new AddToLibraryController();
         SRController srController = new SRController();
         
@@ -43,7 +42,7 @@ public class StartAPI {
             });
             //Get album
             post("/album", (request, response) -> {
-                return get.getAlbum(request.body());
+                return getAlbumController.getAlbum(request.body());
             });
           
             //MARK: Recommendations

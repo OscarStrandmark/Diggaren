@@ -11,11 +11,11 @@ import util.TrackMessage;
 
 import javax.sound.midi.Track;
 
-public class SpotifyGetAlbum {
+public class SpotifyGetAlbumController {
 
     private String albumID = "";
 
-    public SpotifyGetAlbum(){
+    public SpotifyGetAlbumController(){
     }
 
     public String getAlbum (String inputJson){
