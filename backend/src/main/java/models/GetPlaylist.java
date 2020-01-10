@@ -1,6 +1,6 @@
 package models;
 
-public class SpotifyGetPlaylist {
+public class GetPlaylist {
     private String auth;
     private String user_id;
 

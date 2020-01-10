@@ -1,7 +1,7 @@
 package controllers;
 
 import com.google.gson.Gson;
-import models.SpotifyGetPlaylist;
+import models.GetPlaylist;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -10,7 +10,7 @@ import org.springframework.web.client.RestTemplate;
 
 public class SpotifyGetPlaylistController {
     public String getPlayList(String json) {
-        SpotifyGetPlaylist getPlaylistData = new Gson().fromJson(json,SpotifyGetPlaylist.class);
+        GetPlaylist getPlaylistData = new Gson().fromJson(json, GetPlaylist.class);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization",getPlaylistData.getAuth());
         headers.add("Content-Type","application/json");

@@ -11,51 +11,57 @@ public class StartAPI {
         Gson gson = new Gson();
 
         //Controllers
-        RecommendationsController recommendationsController = new RecommendationsController();
-        AudioFeaturesController audioFeaturesController = new AudioFeaturesController();
-        SRController srController = new SRController();
-
-        
-
         SpotifyAddToPlaylistController spotifyAddToPlaylistController = new SpotifyAddToPlaylistController();
+        RecommendationsController recommendationsController = new RecommendationsController();
         SpotifyGetPlaylistController spotifyGetPlaylist = new SpotifyGetPlaylistController();
         SpotifySearchController spotifySearchController = new SpotifySearchController();
+        AudioFeaturesController audioFeaturesController = new AudioFeaturesController();
         AddToLibraryController addToLibraryController = new AddToLibraryController();
+        SRController srController = new SRController();
+
 
         //Endpoints relating to spotify
         path("/spotify", () -> {
             //Search through the spotify-API
-            get("/search", (req,res) -> spotifySearchController.search(req.body()));
+            post("/search", (request,response) -> {
+                        response.type("application/json"); //definiera svar som json
+                        return spotifySearchController.search(request.body());
+                    });
             //Add a track to your spotify library
-            put("/AddToLibrary", (req,res) -> addToLibraryController.addToLibrary(req.body()));
+            post("/AddToLibrary", (request,response) -> addToLibraryController.addToLibrary(request.body()));
             //Endpoints concerning playlists
             path("/playlist", () -> {
                 //Get a list of the users spotify playlists.
-                get("/fetch", (req,res) -> { return spotifyGetPlaylist.getPlayList(req.body()); });
+                post("/fetch", (request,response) -> {
+                    response.type("application/json"); //definiera svar som json
+                    return spotifyGetPlaylist.getPlayList(request.body());
+                });
                 //Add a song to a playlist
-                post("/add", (req,res) -> { return spotifyAddToPlaylistController.addToPlayList(req.body()); });
+                post("/add", (request,response) -> spotifyAddToPlaylistController.addToPlayList(request.body()));
             });
+
+            //MARK: Recommendations
+            post("/recommendation", (request, response) -> {
+                response.type("application/json"); //definiera svar som json
+                TrackMessage msg = gson.fromJson(request.body(), TrackMessage.class); //hämta json object från body som ett definierat objekt
+                return recommendationsController.getRecommendation(msg);
+            }, gson :: toJson);
+
+            //MARK: AudioFeatures
+            post("/audioFeatures", (request, response) -> {
+                response.type("application/json"); //definiera svar som json
+                TrackMessage msg = gson.fromJson(request.body(), TrackMessage.class); //hämta json object från body som ett definierat objekt
+                return audioFeaturesController.getAudioFeatures(msg);
+            }, gson :: toJson);
         });
 
-        //MARK: Recommendations
-        post("/recommendations", (request, response) -> {
-            response.type("application/json"); //definiera svar som json
-            TrackMessage msg = gson.fromJson(request.body(), TrackMessage.class); //hämta json object från body som ett definierat objekt
-            return recommendationsController.getRecommendation(msg);
-        }, gson :: toJson);
-
-        //MARK: AudioFeatures
-        post("/audio_features", (request, response) -> {
-            response.type("application/json"); //definiera svar som json
-            TrackMessage msg = gson.fromJson(request.body(), TrackMessage.class); //hämta json object från body som ett definierat objekt
-            return audioFeaturesController.getAudioFeatures(msg);
-        }, gson :: toJson);
-
-        //MARK: SR spelas nu
-        post("/playing_song", (request, response) -> {
-            response.type("application/json"); //definiera svar som json
-            SRMessage msg = gson.fromJson(request.body(), SRMessage.class); //hämta json object från body som ett definierat objekt
-            return srController.getSongPlaying(msg);
-        }, gson :: toJson);
+        path("/SR", () -> {
+            //MARK: SR spelas nu
+            post("/currently_playing", (request, response) -> {
+                response.type("application/json"); //definiera svar som json
+                SRMessage msg = gson.fromJson(request.body(), SRMessage.class); //hämta json object från body som ett definierat objekt
+                return srController.getSongPlaying(msg);
+            }, gson :: toJson);
+        });
     }
 }
