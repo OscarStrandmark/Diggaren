@@ -1,11 +1,14 @@
-
+import com.google.gson.Gson;
+import static spark.Spark.*;
+import controllers.*;
+import util.SRMessage;
+import util.TrackMessage;
 
 public class StartAPI {
 
     public static void main(String[] args) {
 
 
-        Message msg = new Message();
         SpotifyGetAlbum get = new SpotifyGetAlbum();
         port(5050);
         Gson gson = new Gson();
@@ -40,7 +43,7 @@ public class StartAPI {
             });
             //Get album
             post("/album", (request, response) -> {
-                return get.getAlbum(msg);
+                return get.getAlbum(request.body());
             });
           
             //MARK: Recommendations

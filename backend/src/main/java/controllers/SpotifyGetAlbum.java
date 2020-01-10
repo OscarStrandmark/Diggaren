@@ -2,12 +2,14 @@ package controllers;
 
 import com.google.gson.*;
 import models.Album;
-import models.Message;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
+import util.TrackMessage;
+
+import javax.sound.midi.Track;
 
 public class SpotifyGetAlbum {
 
@@ -16,9 +18,11 @@ public class SpotifyGetAlbum {
     public SpotifyGetAlbum(){
     }
 
-    public String getAlbum ( Message trackMessage ){
+    public String getAlbum (String inputJson ){
+        Gson gson = new Gson();
+        TrackMessage trackMessage = gson.fromJson(inputJson, TrackMessage.class);
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization","Bearer "+trackMessage.getAuthorization());
+        headers.add("Authorization","Bearer " + trackMessage.getAuthorization());
         headers.add("Content-Type","application/json");
         HttpEntity<String> reqEntity = new HttpEntity<String>("",headers);
         ResponseEntity<String> resEntity = new RestTemplate().exchange("https://api.spotify.com/v1/tracks/"+ trackMessage.getTrackID(),
@@ -41,18 +45,10 @@ public class SpotifyGetAlbum {
         }
 
         Album album = new Album(albumName, artistNames, albumID, albumType);
-        Gson gson = new Gson();
 
         String albumAsJson = gson.toJson(album);
         System.out.println(albumAsJson);
 
         return albumAsJson;
-    }
-
-
-    public static void main(String[] args) {
-        SpotifyGetAlbum a = new SpotifyGetAlbum();
-        Message m = new Message();
-        a.getAlbum(m);
     }
 }
