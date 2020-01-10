@@ -17,8 +17,6 @@ public class SpotifySearchController {
         headers.add("Authorization", "Bearer " + searchData.getAuth());
         headers.add("Content-Type","application/json");
 
-        String searchQuery = "";
-
         for (int i = 0; i < searchData.getQuery().length(); i++) {
             searchData.getQuery().replaceAll(" ","+");
         }

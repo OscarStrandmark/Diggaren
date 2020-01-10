@@ -36,8 +36,6 @@ public class RecommendationsController {
         String artistName = artistInfo.get("name").getAsString();
         String artistID = artistInfo.get("id").getAsString();
 
-        System.out.println("track id: " + trackID + "\ntrack name: " + trackName + "\nartist id: " + artistID + "\nartist name: " + artistName);
-
         return new Recommendation(trackName, trackID, artistName, artistID);
     }
 
