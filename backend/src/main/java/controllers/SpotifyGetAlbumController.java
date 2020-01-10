@@ -23,6 +23,7 @@ public class SpotifyGetAlbumController {
         TrackMessage trackMessage = gson.fromJson(inputJson, TrackMessage.class);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization","Bearer " + trackMessage.getAuthorization());
+        System.out.println("Bearer " + trackMessage.getAuthorization());
         headers.add("Content-Type","application/json");
         HttpEntity<String> reqEntity = new HttpEntity<String>("",headers);
         ResponseEntity<String> resEntity = new RestTemplate().exchange("https://api.spotify.com/v1/tracks/"+ trackMessage.getTrackID(),

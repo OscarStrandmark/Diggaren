@@ -26,9 +26,9 @@ public class StartAPI {
         path("/spotify", () -> {
             //Search through the spotify-API
             post("/search", (request,response) -> {
-                        response.type("application/json"); //definiera svar som json
-                        return spotifySearchController.search(request.body());
-                    });
+                response.type("application/json"); //definiera svar som json
+                return spotifySearchController.search(request.body());
+            });
             //Add a track to your spotify library
             post("/AddToLibrary", (request,response) -> addToLibraryController.addToLibrary(request.body()));
             //Endpoints concerning playlists

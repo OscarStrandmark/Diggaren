@@ -14,7 +14,7 @@ public class SpotifySearchController {
     public String search(String json){
         Search searchData = new Gson().fromJson(json, Search.class);
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", searchData.getAuth());
+        headers.add("Authorization", "Bearer " + searchData.getAuth());
         headers.add("Content-Type","application/json");
 
         String searchQuery = "";
@@ -24,8 +24,7 @@ public class SpotifySearchController {
         }
 
         HttpEntity<String> reqEntity = new HttpEntity<String>("",headers);
-        ResponseEntity<String> resEntity = new RestTemplate().exchange("https://api.spotify.com/v1/search?q=" + "q=" + searchData.getQuery() + "&" + "type=" + searchData.getType()
-                                                                            ,HttpMethod.GET ,reqEntity ,String.class);
+        ResponseEntity<String> resEntity = new RestTemplate().exchange("https://api.spotify.com/v1/search?" + "q=" + searchData.getQuery() + "&" + "type=" + searchData.getType(),HttpMethod.GET ,reqEntity ,String.class);
 
         return resEntity.getBody();
     }

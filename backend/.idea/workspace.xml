@@ -95,9 +95,17 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="testclass" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="testclass" />
+      <module name="backend" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Application.StartAPI" />
+        <item itemvalue="Application.testclass" />
         <item itemvalue="Application.SRController" />
         <item itemvalue="Application.AudioFeaturesController" />
       </list>
