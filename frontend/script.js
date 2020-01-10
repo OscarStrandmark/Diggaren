@@ -9,10 +9,6 @@ function myFunction() {
     }
   }
 
-
-
-
-  
 var coll = document.getElementsByClassName("collapsible");
 var i;
 
