@@ -4,13 +4,13 @@ public class Album {
 
     private String name;
     private String[] artists;
-    private String id;
+    private String album_id;
     private String album_type;
 
     public Album(String name, String[] artists,  String id, String album_type){
         this.name = name;
         this.artists = artists;
-        this.id = id;
+        this.album_id = id;
         this.album_type = album_type;
     }
 
@@ -35,12 +35,12 @@ public class Album {
         this.artists = artists;
     }
 
-    public String getId() {
-        return id;
+    public String getAlbum_id() {
+        return album_id;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setAlbum_id(String album_id) {
+        this.album_id = album_id;
     }
 
     public String getType() { return album_type; }

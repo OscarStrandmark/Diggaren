@@ -18,7 +18,7 @@ public class SpotifyGetAlbum {
     public SpotifyGetAlbum(){
     }
 
-    public String getAlbum (String inputJson ){
+    public String getAlbum (String inputJson){
         Gson gson = new Gson();
         TrackMessage trackMessage = gson.fromJson(inputJson, TrackMessage.class);
         HttpHeaders headers = new HttpHeaders();
