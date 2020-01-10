@@ -2,8 +2,8 @@ package models;
 
 public class Message {
 
-    public String authorization = "BQBT4gfiQpeTUsxYIUVgLofhcLv2VDBTXt2f2WGi7S798taXaQBssTPTH9izypOmtFB-pLRVSKADIXPc5EfiEtz9Ei4iZ43EcDnWLCH3HahrhLnQZ7pCbF5fB5aKMXMIFfDVBq0Yt9-6LV6KyUsXVxwJllsLxHDbhPafWuqubm7aiUm_MiEBz6n8mz6Nf4Wo_Lkwix4EcQh0rilRv81jRJJRTuBOQ-cVPgus2QExWLGylsdZhxoNzqgi9pxQLaJhsax_swQENbg";
-    public String albumID = "0sNOF9WDwhWunNAHPD3Baj";
+    public String authorization = "BQAksoscVtPhvGqXd7RCvbhNN87en-9H6t7vuW5i1N42aAFK1zTGZ4k-_veCTPOdR4vlzwQc1ix7pVUXsIOG0gxorSxgczuRIp0O73MWIf0NGHcInlrUyvnA6WdX6478QM3oim438q2bxMHWnYvOtL0P6-xeaDIgUydj1pFXepyw_u-AibWcYHDZQEGnRc5u5qUIb_ZFRqqlV0iyjKs-5VmN1KBtK_aKdjqOhrfDHEtxzmdtQZ7ykxmFEXTsBY8oAtAP2SU2_k4";
+    public String trackID = "28iw1FqJf6Vnfl2Fcu9rBh";
 
     public Message() {
 
@@ -11,7 +11,7 @@ public class Message {
 
     public Message(String authorization, String trackID){
         this.authorization = authorization;
-        this.albumID = trackID;
+        this.trackID = trackID;
     }
 
     public String getAuthorization() {
@@ -23,10 +23,11 @@ public class Message {
     }
 
     public String getTrackID() {
-        return albumID;
+        return trackID;
     }
 
     public void setTrackID(String trackId) {
-        this.albumID = trackId;
+        this.trackID = trackId;
     }
+
 }
