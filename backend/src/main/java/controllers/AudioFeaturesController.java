@@ -2,7 +2,7 @@ package controllers;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import models.AudioFeatures;
+import models.*;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
