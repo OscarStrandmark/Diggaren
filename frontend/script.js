@@ -111,6 +111,23 @@ function getCookie(cname) {
   return "";
 }
 
+function dropdownMenu() {
+  document.getElementById("myDropdown").classList.toggle("show");
+}
+
+window.onclick = function(event) {
+  if (!event.target.matches('.dropbtn')) {
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.toggle('show');
+      }
+    }
+  }
+}
+
 // When website is loaded, run function to create dropdown menu with playlists
 $(document).ready(function(){
   var access_token = getCookie("accessToken");
@@ -128,9 +145,8 @@ $(document).ready(function(){
       success: function(result) {
         // loops through playlists and creates a button for each of them in the dropdown menu
         for(var key in result.items) {
-          btn = $('<button />', {
+          btn = $('<a />', {
             text : result.items[key].name,
-            type  : 'button',
             value : result.items[key].id,
             on    : {
                click: function() {
