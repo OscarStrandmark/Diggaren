@@ -1,12 +1,12 @@
-import com.google.gson.Gson;
-import util.SRMessage;
-import util.TrackMessage;
-import controllers.*;
-import static spark.Spark.*;
+
 
 public class StartAPI {
 
     public static void main(String[] args) {
+
+
+        Message msg = new Message();
+        SpotifyGetAlbum get = new SpotifyGetAlbum();
         port(5050);
         Gson gson = new Gson();
 
@@ -18,8 +18,7 @@ public class StartAPI {
         AudioFeaturesController audioFeaturesController = new AudioFeaturesController();
         AddToLibraryController addToLibraryController = new AddToLibraryController();
         SRController srController = new SRController();
-
-
+        
         //Endpoints relating to spotify
         path("/spotify", () -> {
             //Search through the spotify-API
@@ -39,7 +38,11 @@ public class StartAPI {
                 //Add a song to a playlist
                 post("/add", (request,response) -> spotifyAddToPlaylistController.addToPlayList(request.body()));
             });
-
+            //Get album
+            post("/album", (request, response) -> {
+                return get.getAlbum(msg);
+            });
+          
             //MARK: Recommendations
             post("/recommendation", (request, response) -> {
                 response.type("application/json"); //definiera svar som json
@@ -63,5 +66,6 @@ public class StartAPI {
                 return srController.getSongPlaying(msg);
             }, gson :: toJson);
         });
+
     }
 }
