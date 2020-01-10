@@ -72,11 +72,6 @@ color: white;
 }
 
 .dropbtn{
-background-color: rgb(20, 157, 20);
-border: none;
-padding: 20px 32px;
-text-align: center;
-text-decoration: none;
 display: block;
 margin-left: auto;
 margin-right: auto;
