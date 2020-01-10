@@ -29,9 +29,17 @@ var stateKey = 'spotify_auth_state';
 
 var app = express();
 
-app.use(express.static(__dirname))
+app.use(express.static(__dirname, {index: 'login.html'}))
    .use(cors())
    .use(cookieParser());
+
+
+app.get('/home', function(req, res) {
+    res.sendFile(__dirname + '/index.html');
+});
+
+
+
 
 // get request is made from the browser
 app.get('/login', function(req, res) {
@@ -88,6 +96,7 @@ app.get('/callback', function(req, res) {
               refresh_token = body.refresh_token;
 
           res.cookie('accessToken', access_token);
+          res.cookie('refreshToken', refresh_token);
           
           var options = {
             url: 'https://api.spotify.com/v1/me',
@@ -102,11 +111,12 @@ app.get('/callback', function(req, res) {
           
           
           // we can also pass the token to the browser to make requests from there
-          res.redirect('/#' +
-            querystring.stringify({
-              access_token: access_token,
-              refresh_token: refresh_token
-            }));
+          // res.redirect('/home?' +
+          //   querystring.stringify({
+          //     access_token: access_token,
+          //     refresh_token: refresh_token
+          //   }));
+          res.redirect('/home');
         } else {
           res.redirect('/#' +
             querystring.stringify({
@@ -115,6 +125,29 @@ app.get('/callback', function(req, res) {
         }
       });
     }
+  });
+
+  app.get('/refresh', function(req, res) {
+
+    // requesting access token from refresh token
+    var refresh_token = req.cookies['refreshToken'];
+    var authOptions = {
+      url: 'https://accounts.spotify.com/api/token',
+      headers: { 'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64')) },
+      form: {
+        grant_type: 'refresh_token',
+        refresh_token: refresh_token
+      },
+      json: true
+    };
+  
+    request.post(authOptions, function(error, response, body) {
+      if (!error && response.statusCode === 200) {
+        var access_token = body.access_token;
+        res.cookie('accessToken', access_token);
+        res.redirect('/home');
+      }
+    });
   });
 
   

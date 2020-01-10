@@ -10,8 +10,6 @@
         <link rel="icon" href="bild.jpg">
         <script src="script.js" defer></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script type="text/javascript" src="jquery.playlist.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     </head>
@@ -19,26 +17,25 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     
         <div class="topnav">
-            <a id="home" href="#home"></a>
-            <!-- Navigation links (hidden by default) -->
             <div id="myLinks">
-              <a href="#news">P1</a>
-              <a href="#contact">P2</a>
-              <a href="/login">Logga in med Spotify </a>
+				<div class="inline" onclick="radio('p2')">P2</div>
+				<div class="inline" onclick="radio('p3')">P3</div>
+				<div class="inline">
+					<button type="button" class="pcollapsible">
+						Pseudokanaler
+					</button>
+					<div class="pcontent">
+						<p>Lorem ipsum...</p>
+					</div>
+            	</div>
             </div>
-            <!-- "Hamburger menu" / "Bar icon" to toggle the navigation links -->
-            <a href="javascript:void(0);" class="icon" onclick="myFunction()">
-              <i class="fa fa-bars"></i>
-            </a>
           </div>
 
         <div class="spelas">
             <!-- Importerad play paus knapp-->
-            
-                    <audio id="player2" src="https://sverigesradio.se/topsy/direkt/164-hi-mp3"></audio>    
-                    <a onclick="toggle()"><i id="a" class="fa fa-play-circle fa-2x"></i></a>
-        
-            Radiokanal som spelas
+            <audio id="player2" src="https://sverigesradio.se/topsy/direkt/164-hi-mp3"></audio>    
+            <a onclick="toggle()"><i id="a" class="fa fa-play-circle fa-2x"></i></a>
+            <div id='nowPlaying'>Nu spelas radiokanal P3</div>
          </div>
         
           <h1 class="title">
@@ -48,6 +45,10 @@
               Låttext & artist
           </h2>
           <!-- <button class="button"><a href="">Lägg till låt</a></button> -->
+          <button class="refresh">
+              
+                <a href="/refresh">Refresh</a>
+          </button>
           <div class="dropdown">
             <button class="dropbtn">Add song to playlist</button>
             <div class="dropdown-content">
