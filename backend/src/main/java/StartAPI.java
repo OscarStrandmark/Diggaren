@@ -1,9 +1,21 @@
+import com.google.gson.Gson;
+import util.SRMessage;
+import util.TrackMessage;
 import controllers.*;
 import static spark.Spark.*;
 
 public class StartAPI {
+
     public static void main(String[] args) {
         port(5050);
+        Gson gson = new Gson();
+
+        //Controllers
+        RecommendationsController recommendationsController = new RecommendationsController();
+        AudioFeaturesController audioFeaturesController = new AudioFeaturesController();
+        SRController srController = new SRController();
+
+        
 
         SpotifyAddToPlaylistController spotifyAddToPlaylistController = new SpotifyAddToPlaylistController();
         SpotifyGetPlaylistController spotifyGetPlaylist = new SpotifyGetPlaylistController();
@@ -24,5 +36,26 @@ public class StartAPI {
                 post("/add", (req,res) -> { return spotifyAddToPlaylistController.addToPlayList(req.body()); });
             });
         });
+
+        //MARK: Recommendations
+        post("/recommendations", (request, response) -> {
+            response.type("application/json"); //definiera svar som json
+            TrackMessage msg = gson.fromJson(request.body(), TrackMessage.class); //hämta json object från body som ett definierat objekt
+            return recommendationsController.getRecommendation(msg);
+        }, gson :: toJson);
+
+        //MARK: AudioFeatures
+        post("/audio_features", (request, response) -> {
+            response.type("application/json"); //definiera svar som json
+            TrackMessage msg = gson.fromJson(request.body(), TrackMessage.class); //hämta json object från body som ett definierat objekt
+            return audioFeaturesController.getAudioFeatures(msg);
+        }, gson :: toJson);
+
+        //MARK: SR spelas nu
+        post("/playing_song", (request, response) -> {
+            response.type("application/json"); //definiera svar som json
+            SRMessage msg = gson.fromJson(request.body(), SRMessage.class); //hämta json object från body som ett definierat objekt
+            return srController.getSongPlaying(msg);
+        }, gson :: toJson);
     }
 }
