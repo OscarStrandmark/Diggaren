@@ -128,9 +128,9 @@ $(document).ready(function(){
       success: function(result) {
         // loops through playlists and creates a button for each of them in the dropdown menu
         for(var key in result.items) {
-          btn = $('<button />', {
+          btn = $('<a />', {
+            class: "spellista",
             text : result.items[key].name,
-            type  : 'button',
             value : result.items[key].id,
             on    : {
                click: function() {
