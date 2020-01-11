@@ -1,4 +1,4 @@
-package util;
+package models;
 
 /**
  * Represents JSON messages sent from client to server

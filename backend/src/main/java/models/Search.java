@@ -6,6 +6,12 @@ public class Search {
     private String type;
     private String query;
 
+    public Search(String auth, String type, String query) {
+        this.auth = auth;
+        this.type = type;
+        this.query = query;
+    }
+
     public String getAuth() {
         return auth;
     }

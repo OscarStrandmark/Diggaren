@@ -1,4 +1,4 @@
-package util;
+package models;
 
 public class SRMessage {
     private int channelID;

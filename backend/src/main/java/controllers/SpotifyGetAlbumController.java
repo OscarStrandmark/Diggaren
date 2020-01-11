@@ -7,9 +7,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
-import util.TrackMessage;
-
-import javax.sound.midi.Track;
+import models.TrackMessage;
 
 public class SpotifyGetAlbumController {
 

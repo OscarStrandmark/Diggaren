@@ -1,15 +1,17 @@
 import com.google.gson.Gson;
-import static spark.Spark.*;
 import controllers.*;
-import util.SRMessage;
-import util.TrackMessage;
-import models.*;
+import models.SRMessage;
+import models.TrackMessage;
+
+import static spark.Spark.*;
 
 public class StartAPI {
 
     public static void main(String[] args) {
-
         port(5050);
+
+        //CorsFilter.apply();
+
         Gson gson = new Gson();
 
         //Controllers
@@ -18,10 +20,11 @@ public class StartAPI {
         SpotifyGetPlaylistController spotifyGetPlaylist = new SpotifyGetPlaylistController();
         SpotifySearchController spotifySearchController = new SpotifySearchController();
         AudioFeaturesController audioFeaturesController = new AudioFeaturesController();
+        PsuedoChannelController psuedoChannelController = new PsuedoChannelController();
         SpotifyGetAlbumController getAlbumController = new SpotifyGetAlbumController();
         AddToLibraryController addToLibraryController = new AddToLibraryController();
         SRController srController = new SRController();
-        
+
         //Endpoints relating to spotify
         path("/spotify", () -> {
             //Search through the spotify-API
@@ -63,12 +66,35 @@ public class StartAPI {
 
         path("/SR", () -> {
             //MARK: SR spelas nu
-            post("/currently_playing", (request, response) -> {
+            post("/currentlyPlaying", (request, response) -> {
                 response.type("application/json"); //definiera svar som json
                 SRMessage msg = gson.fromJson(request.body(), SRMessage.class); //hämta json object från body som ett definierat objekt
                 return srController.getSongPlaying(msg);
             }, gson :: toJson);
         });
 
+        post("psuedoChannel",((request, response) -> {
+            response.type("application/json"); //definiera svar som json
+            return psuedoChannelController.getChannel(request.body());
+        }), gson :: toJson);
+
+
+        options("/*", (request, response) -> {
+
+
+            String accessControlRequestHeaders = request.headers("Access-Control-Request-Headers");
+            if (accessControlRequestHeaders != null) {
+                response.header("Access-Control-Allow-Headers", accessControlRequestHeaders);
+            }
+
+            String accessControlRequestMethod = request.headers("Access-Control-Request-Method");
+            if (accessControlRequestMethod != null) {
+                response.header("Access-Control-Allow-Methods", accessControlRequestMethod);
+            }
+
+            response.header("origin","localhost:3000");
+
+            return "OK";
+        });
     }
 }
