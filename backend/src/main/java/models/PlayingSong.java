@@ -1,5 +1,10 @@
 package models;
 
+/**
+ * Represents the response object to the client from the SR "currentlyPlaying"
+ * endpoint. Contaning information about current playing song and time of next
+ * song playing. Will be used to send as JSON response to requesting client.
+ */
 public class PlayingSong {
     private String playingSongName;
     private String playingSongArtist;

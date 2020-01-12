@@ -6,7 +6,6 @@
       <change beforePath="$PROJECT_DIR$/src/main/java/controllers/controller.md" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/models/model.md" beforeDir="false" />
     </list>
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -44,18 +43,6 @@
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.folding" />
-  </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
   </component>
   <component name="RunManager" selected="Application.StartAPI">
     <configuration name="AudioFeaturesController" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
@@ -120,6 +107,18 @@
         <item itemvalue="Application.AudioFeaturesController" />
       </list>
     </recent_temporary>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -206,11 +205,11 @@
       <screen x="0" y="23" width="1920" height="1057" />
     </state>
     <state x="625" y="256" key="run.anything.popup/-1280.303.1280.777/0.23.1920.1057@0.23.1920.1057" timestamp="1578472524945" />
-    <state x="417" y="196" width="670" height="497" key="search.everywhere.popup" timestamp="1578566213146">
+    <state x="417" y="196" width="670" height="497" key="search.everywhere.popup" timestamp="1578837872724">
       <screen x="0" y="23" width="1280" height="777" />
     </state>
     <state x="625" y="258" width="670" height="676" key="search.everywhere.popup/-1280.303.1280.777/0.23.1920.1057@0.23.1920.1057" timestamp="1578501292381" />
-    <state x="417" y="196" width="670" height="497" key="search.everywhere.popup/0.23.1280.777@0.23.1280.777" timestamp="1578566213146" />
+    <state x="417" y="196" width="670" height="497" key="search.everywhere.popup/0.23.1280.777@0.23.1280.777" timestamp="1578837872724" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/backend$StartAPI.ic" NAME="StartAPI Coverage Results" MODIFIED="1578570458725" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />

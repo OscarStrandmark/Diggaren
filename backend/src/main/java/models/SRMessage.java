@@ -1,5 +1,9 @@
 package models;
 
+/**
+ * Represents the message sent (in JSON) from client
+ * to the endpoint. Contains channelID for requested channel
+ */
 public class SRMessage {
     private int channelID;
 

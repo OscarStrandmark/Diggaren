@@ -6,6 +6,8 @@ package models;
  * Can be used so far to pass messages from client for both
  * Recommendations and AudioFeatures endpoints
  *
+ * containing Authorization token and trackID (from Spotify) of the
+ * song that will be used as seed for the requested data.
  */
 public class TrackMessage {
     private String authorization;

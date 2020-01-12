@@ -9,12 +9,24 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import models.TrackMessage;
 
-
+/**
+ * Controller clas for "Spotify/recommendations" endpoint. Working towards
+ * Spotify API and process the response and package it into an Recommendation
+ * object for the requesting client.
+ */
 public class RecommendationsController {
 
     public RecommendationsController() {
     }
 
+    /**
+     * Request an recommended song from Spotify API based on queried song
+     * packages into Recommendation object
+     * @param msg - TrackMessage containing an song ID (from Spotify) and
+     * Authorization token (from Spotify).
+     * @return - Recommendation object containing processed and packaged data
+     * from Spotify API
+     */
     public Recommendation getRecommendation(TrackMessage msg) {
         //getting the recommendation from spotify API by sending GET req
         HttpHeaders headers = new HttpHeaders();

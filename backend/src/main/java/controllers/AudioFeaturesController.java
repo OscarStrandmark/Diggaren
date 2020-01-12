@@ -10,11 +10,23 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import models.TrackMessage;
 
+/**
+ * Controller class for handling "Spotify/audioFeatures" endpoint,
+ * sends request to Spotify API and process the received data and
+ * package it to an AudioFeatures object.
+ */
 public class AudioFeaturesController {
 
     public AudioFeaturesController() {
     }
 
+    /**
+     * Sending request for audioFeatures of seeded song to Spotify API
+     * @param msg - TrackMessage containgin Autorization token and songID
+     * (from Spotify)
+     * @return - AudioFeatures object containing values of different audio
+     * meassures.
+     */
     public AudioFeatures getAudioFeatures(TrackMessage msg) {
         //getting the recommendation from spotify API by sending GET req
         HttpHeaders headers = new HttpHeaders();

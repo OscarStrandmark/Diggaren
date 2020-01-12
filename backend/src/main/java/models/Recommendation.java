@@ -1,5 +1,10 @@
 package models;
 
+/**
+ * An model representing the data which will be sent o client
+ * requesting the "Spotify/recommendations" endpoint, containing
+ * name and id (from Spotify) of recommended song and its artist.
+ */
 public class Recommendation {
     private String trackName;
     private String trackID;

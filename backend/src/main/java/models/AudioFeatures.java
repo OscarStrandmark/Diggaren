@@ -1,5 +1,10 @@
 package models;
 
+/**
+ * Model representing Audio features, packaged to be sent to
+ * requested client, will be used to represent the JSON response.
+ * contains different audio meassurements.
+ */
 public class AudioFeatures {
     private String danceability;
     private String energy;
