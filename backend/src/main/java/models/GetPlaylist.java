@@ -1,14 +1,15 @@
 package models;
 
+/**
+ * Class used to handle dataconversion from json to java object.
+ *
+ * @Author Oscar Strandmark
+ */
 public class GetPlaylist {
     private String auth;
-    private String user_id;
 
     public String getAuth(){
         return auth;
     }
 
-    public String getUser_id() {
-        return user_id;
-    }
 }

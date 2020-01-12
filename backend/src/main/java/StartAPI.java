@@ -2,15 +2,18 @@ import com.google.gson.Gson;
 import controllers.*;
 import models.SRMessage;
 import models.TrackMessage;
+import util.CorsFilter;
 
 import static spark.Spark.*;
 
 public class StartAPI {
 
     public static void main(String[] args) {
+        //Run API on port given
         port(5050);
 
-        //CorsFilter.apply();
+        //Filter class found on github, used to give our responses the headers they needed to fix CORS-errors
+        CorsFilter.apply();
 
         Gson gson = new Gson();
 
@@ -20,7 +23,7 @@ public class StartAPI {
         SpotifyGetPlaylistController spotifyGetPlaylist = new SpotifyGetPlaylistController();
         SpotifySearchController spotifySearchController = new SpotifySearchController();
         AudioFeaturesController audioFeaturesController = new AudioFeaturesController();
-        PsuedoChannelController psuedoChannelController = new PsuedoChannelController();
+        PseudoChannelController psuedoChannelController = new PseudoChannelController();
         SpotifyGetAlbumController getAlbumController = new SpotifyGetAlbumController();
         AddToLibraryController addToLibraryController = new AddToLibraryController();
         SRController srController = new SRController();
@@ -79,8 +82,8 @@ public class StartAPI {
         }), gson :: toJson);
 
 
+        //This endpoint handles the preflighting automatically done by browsers. Therefore it is not in the documentation.
         options("/*", (request, response) -> {
-
 
             String accessControlRequestHeaders = request.headers("Access-Control-Request-Headers");
             if (accessControlRequestHeaders != null) {
@@ -92,7 +95,10 @@ public class StartAPI {
                 response.header("Access-Control-Allow-Methods", accessControlRequestMethod);
             }
 
-            response.header("origin","localhost:3000");
+            String accessControlRequestOrigin = request.headers("Access-Control-Request-Origin");
+            if (accessControlRequestOrigin != null){
+                response.header("Access-Control-Allow-Origin", "*");
+            }
 
             return "OK";
         });
