@@ -69,10 +69,13 @@ function radio(station) {
   if(station == "p2") {
     audio.src = "https://sverigesradio.se/topsy/direkt/2562-hi-mp3";
     $("#nowPlaying").html("Nu spelas radiokanal P2");
-
+	$('#p3').toggleClass('selected');
+	$('#p2').toggleClass('selected');
   } else if(station == "p3") {
     audio.src = "https://sverigesradio.se/topsy/direkt/164-hi-mp3";
-    $("#nowPlaying").html("Nu spelas radiokanal P3");
+	$("#nowPlaying").html("Nu spelas radiokanal P3");
+	$('#p3').toggleClass('selected');
+	$('#p2').toggleClass('selected');
   }
   audio.load();
   if(play == true) {

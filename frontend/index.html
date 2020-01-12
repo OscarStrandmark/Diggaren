@@ -18,9 +18,9 @@
     
         <div class="topnav">
             <div id="myLinks">
-				<div class="inline" onclick="radio('p2')">P2</div>
-				<div class="inline" onclick="radio('p3')">P3</div>
-				<div class="inline">
+				<div id='p2' class="inline channels" onclick="radio('p2')">P2</div>
+				<div id='p3' class="inline channels selected" onclick="radio('p3')">P3</div>
+				<div class="inline channels">
 					<button type="button" class="pcollapsible">
 						Pseudokanaler
 					</button>
@@ -31,18 +31,15 @@
             </div>
           </div>
 
-        <div class="spelas">
+        <div id='player'>
             <!-- Importerad play paus knapp-->
-            <audio id="player2" src="https://sverigesradio.se/topsy/direkt/164-hi-mp3"></audio>    
-            <a onclick="toggle()"><i id="a" class="fa fa-play-circle fa-2x"></i></a>
-            <div id='nowPlaying'>Nu spelas radiokanal P3</div>
+            <audio controls id="player2" src="https://sverigesradio.se/topsy/direkt/164-hi-mp3"></audio>   
          </div>
         
           <h1 class='title'>
               Spelas just nu:
           </h1>
           <h2 class="title" id='nowPlaying'>
-              Låttext & artist
           </h2>
           <center>
           <div class="dropdown">
