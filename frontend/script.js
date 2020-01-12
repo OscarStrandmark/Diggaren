@@ -1,4 +1,4 @@
-var apiUrl = '192.168.137.1:5050';
+var apiUrl = 'localhost:5050';
 
 
 /* Toggle between showing and hiding the navigation menu links when the user clicks on the hamburger menu / bar icon */
@@ -27,20 +27,6 @@ for (i = 0; i < coll.length; i++) {
   });
 }
 
-// var coll = document.getElementsByClassName("dropbtn");
-// var i;
-
-// for (i = 0; i < coll.length; i++) {
-//   coll[i].addEventListener("click", function() {
-//     this.classList.toggle("active");
-//     var content = this.nextElementSibling;
-//     if (content.style.display === "block") {
-//       content.style.display = "none";
-//     } else {
-//       content.style.display = "block";
-//     }
-//   });
-// }
 
 var coll = document.getElementsByClassName("pcollapsible");
 var i;
@@ -58,7 +44,6 @@ for (i = 0; i < coll.length; i++) {
 }
   
 // Importerad play paus knapp
-
 var play = false;
 var audio=document.getElementById('player2');
 function toggle() {
@@ -113,6 +98,7 @@ function getCookie(cname) {
   return "";
 }
 
+// Sets a given cookie in the browser
 function setCookie(name, value) {
 	document.cookie = name + '=' + value;
 }
@@ -137,14 +123,15 @@ window.onclick = function(event) {
 	}
 }
 
+// Saves the currently playing songs Spotify ID to a cookie
 function saveSongID(songName, artistName) {
 	$.ajax({
 		url: apiUrl + '/spotify/search',
 		type: 'POST',
 		body: {
-			auth: getCookie('accessToken'),
-			type: 'song',
-			query: songName + ' ' + artistName
+			'auth': getCookie('accessToken'),
+			'type': 'song',
+			'query': songName + ' ' + artistName
 		},
 		success: function(result) {
 			var songID = result.items[0].id;
@@ -156,15 +143,18 @@ function saveSongID(songName, artistName) {
 	});	
 }
 
+// Gets the currently playing song from the radio and presents it in the browser
 function updateSongInfo() {
 	var nowPlaying = '';
+	// Request is sent to fetch currently playing song
 	$.ajax({
 		url: apiUrl + '/SR/currentlyPlaying',
 		type: 'POST',
 		body: {
-			channelID: getCookie('channelID')
+			'channelID': getCookie('channelID')
 		},
 		success: function(result) {
+			// If there is a song currently playing, save the ID to cookie and present the song info to the browser
 			if(result['playingSongName'] != null) {
 				var songName = result['playingSongName'];
 				var artistName = result['playingSongArtist'];
@@ -183,12 +173,13 @@ function updateSongInfo() {
 		}
 	});
 
+	// Request is sent to fetch recommendations based on the currently playing song
 	$.ajax({
 		url: apiUrl + '/spotify/recommendation',
 		type: 'POST',
 		body: {
-			authorization: getCookie('accessToken'),
-			trackID: getCookie('songID')
+			'authorization': getCookie('accessToken'),
+			'trackID': getCookie('songID')
 		},
 		success: function(result) {
 			var recommendedName = callback['trackName'];
@@ -205,14 +196,15 @@ $(document).ready(function() {
 	updateSongInfo();
 })
 
+// Adds the given song to the given playlist on Spotify
 function addToPlaylist(songID, playlistID) {
 	$.ajax( {
 		url: apiUrl + '/spotify/playlist/add',
 		type: 'POST',
 		body: {
-		playlist_id: playlistID,
-		auth: getCookie('accessToken'),
-		track_id: getCookie('songID')
+			'playlist_id': playlistID,
+			'auth': getCookie('accessToken'),
+			'track_id': getCookie('songID')
 		},
 		success: function(result) {
 			alert('Song added to playlist');
