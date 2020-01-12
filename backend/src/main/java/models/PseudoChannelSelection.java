@@ -1,6 +1,6 @@
 package models;
 
-public class PsuedoChannelSelection {
+public class PseudoChannelSelection {
     private String auth;
     private String type;
 

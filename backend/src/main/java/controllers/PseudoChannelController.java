@@ -3,11 +3,11 @@ package controllers;
 import com.google.gson.*;
 import models.*;
 
-public class PsuedoChannelController {
+public class PseudoChannelController {
 
-    public PsuedoChannelSelectionResponse getChannel(String json){
+    public PseudoChannelSelectionResponse getChannel(String json){
         Gson gson = new Gson();
-        PsuedoChannelSelection selection = gson.fromJson(json,PsuedoChannelSelection.class);
+        PseudoChannelSelection selection = gson.fromJson(json, PseudoChannelSelection.class);
 
         SRController srController = new SRController();
 
@@ -47,14 +47,14 @@ public class PsuedoChannelController {
                 e.printStackTrace();
             }
 
-            PsuedoChannelSelectionResponse response = null;
+            PseudoChannelSelectionResponse response = null;
 
             if(successP2 && !successP3){
-                response = new PsuedoChannelSelectionResponse("P2");
+                response = new PseudoChannelSelectionResponse("P2");
             }
 
             if(!successP2 && successP3){
-                response = new PsuedoChannelSelectionResponse("P3");
+                response = new PseudoChannelSelectionResponse("P3");
             }
 
             if(successP2 && successP3){
@@ -102,11 +102,11 @@ public class PsuedoChannelController {
                 } else {
                     result = "P3";
                 }
-                response = new PsuedoChannelSelectionResponse(result);
+                response = new PseudoChannelSelectionResponse(result);
             }
             return response;
         }
-        return new PsuedoChannelSelectionResponse("-1");
+        return new PseudoChannelSelectionResponse("-1");
     }
 }
 

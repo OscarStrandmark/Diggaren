@@ -1,9 +1,9 @@
 package models;
 
-public class PsuedoChannelSelectionResponse {
+public class PseudoChannelSelectionResponse {
     private String channel;
 
-    public PsuedoChannelSelectionResponse(String channel) {
+    public PseudoChannelSelectionResponse(String channel) {
         this.channel = channel;
     }
 
