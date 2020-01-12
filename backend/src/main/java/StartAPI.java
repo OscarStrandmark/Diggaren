@@ -47,7 +47,7 @@ public class StartAPI {
                 //Add a song to a playlist
                 post("/add", (request,response) -> spotifyAddToPlaylistController.addToPlayList(request.body()));
             });
-            //Get album
+            //Get album, already converted to JSON
             post("/album", (request, response) -> {
                 return getAlbumController.getAlbum(request.body());
             });
