@@ -91,6 +91,7 @@ text-decoration: none;
 .dropdown {
   position: relative;
   display: inline-block;
+  padding: 50px;
 }
 
 /* Dropdown Content (Hidden by Default) */
