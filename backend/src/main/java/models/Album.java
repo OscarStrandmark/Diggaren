@@ -1,5 +1,10 @@
 package models;
 
+/**
+ * This class represents an album. The data we've collected from Spotify's API is reduced to the variables in this class
+ *
+ * @author Said Mohammed
+ */
 public class Album {
 
     private String name;
