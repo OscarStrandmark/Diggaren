@@ -3,20 +3,30 @@ package controllers;
 import com.google.gson.*;
 import models.*;
 
+/**
+ * This mess of a class handles the logic behind pseudo-channels.
+ *
+ * @Author Oscar Strandmark
+ */
 public class PseudoChannelController {
 
+    //Everything in this method is repeated twice, as it is done for both radio channels.
     public PseudoChannelSelectionResponse getChannel(String json){
+        //Convert json to java object.
         Gson gson = new Gson();
         PseudoChannelSelection selection = gson.fromJson(json, PseudoChannelSelection.class);
 
         SRController srController = new SRController();
 
+        //Get songs currently playing on radio channels
         PlayingSong playingP2 = srController.getSongPlaying(new SRMessage(163));
         PlayingSong playingP3 = srController.getSongPlaying(new SRMessage(164));
 
+        //If at least one station is playing music
         if(playingP2.getPlayingSongName() != null || playingP3.getPlayingSongName() != null){
             SpotifySearchController searchController = new SpotifySearchController();
 
+            //Search the spotify catalog for the songs.
             Search searchP2 = new Search(selection.getAuth(), "track", playingP2.getPlayingSongName());
             Search searchP3 = new Search(selection.getAuth(), "track", playingP3.getPlayingSongName());
 
@@ -27,6 +37,7 @@ public class PseudoChannelController {
             String songIdP2 = null;
             String songIdP3 = null;
 
+            //If they exist in the spotify catalog, get their trackID.
             try { //try to get p2
                 String searchResultP2 = searchController.search(gson.toJson(searchP2));
                 JsonObject trackMapP2 = parser.parse(searchResultP2).getAsJsonObject().get("tracks").getAsJsonObject().get("items").getAsJsonArray().get(0).getAsJsonObject(); //gets the one and only track from the response as an json object
@@ -49,6 +60,7 @@ public class PseudoChannelController {
 
             PseudoChannelSelectionResponse response = null;
 
+            //If only one station plays music that is able to be found on spotify, play that one.
             if(successP2 && !successP3){
                 response = new PseudoChannelSelectionResponse("P2");
             }
@@ -57,6 +69,7 @@ public class PseudoChannelController {
                 response = new PseudoChannelSelectionResponse("P3");
             }
 
+            //If both stations are playing music found in the spotify catalog.
             if(successP2 && successP3){
 
                 AudioFeaturesController audioFeaturesController = new AudioFeaturesController();
@@ -67,6 +80,7 @@ public class PseudoChannelController {
                 double valP2 = 0;
                 double valP3 = 0;
 
+                //Evalueta their values based on the spotify track analysis.
                 switch (selection.getType().toLowerCase()) {
                     case "dance":
                         valP2 = Double.parseDouble(featuresP2.getDanceability());
@@ -106,6 +120,7 @@ public class PseudoChannelController {
             }
             return response;
         }
+        //If there was an error, or both songs are not playing music: return -1
         return new PseudoChannelSelectionResponse("-1");
     }
 }

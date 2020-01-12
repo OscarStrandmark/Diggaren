@@ -9,8 +9,10 @@ import static spark.Spark.*;
 public class StartAPI {
 
     public static void main(String[] args) {
+        //Run API on port given
         port(5050);
 
+        //Filter class found on github, used to give our responses the headers they needed to fix CORS-errors
         CorsFilter.apply();
 
         Gson gson = new Gson();
@@ -80,8 +82,8 @@ public class StartAPI {
         }), gson :: toJson);
 
 
+        //This endpoint handles the preflighting automatically done by browsers. Therefore it is not in the documentation.
         options("/*", (request, response) -> {
-
 
             String accessControlRequestHeaders = request.headers("Access-Control-Request-Headers");
             if (accessControlRequestHeaders != null) {

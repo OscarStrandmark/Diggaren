@@ -1,5 +1,10 @@
 package models;
 
+/**
+ * Class used to handle dataconversion from json to java object.
+ *
+ * @Author Oscar Strandmark
+ */
 public class Search {
 
     private String auth;
