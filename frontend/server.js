@@ -31,6 +31,7 @@ var stateKey = 'spotify_auth_state';
 
 var app = express();
 
+
 app.use(express.static(__dirname, {index: 'login.html'}))
    .use(cors())
    .use(cookieParser())
@@ -131,6 +132,7 @@ app.post('/search', function(req, res) {
     }));
 });
 
+
 // get request is made from the browser
 app.get('/login', function(req, res) {
 
@@ -147,6 +149,7 @@ app.get('/login', function(req, res) {
       redirect_uri: redirect_uri,
       state: state, 
       show_dialog:true
+
     }));
 });
 
@@ -188,6 +191,7 @@ app.get('/callback', function(req, res) {
 
           res.cookie('accessToken', access_token);
           res.cookie('refreshToken', refresh_token);
+
           
           var options = {
             url: 'https://api.spotify.com/v1/me',
@@ -208,6 +212,7 @@ app.get('/callback', function(req, res) {
           //     refresh_token: refresh_token
           //   }));
           res.redirect('/home');
+
         } else {
           res.redirect('/#' +
             querystring.stringify({
@@ -240,7 +245,6 @@ app.get('/callback', function(req, res) {
       }
     });
   });
-
   
   console.log('Listening on 8888');
   app.listen(8888);

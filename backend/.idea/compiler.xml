@@ -9,5 +9,8 @@
         <module name="backend" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel target="11">
+      <module name="backend" target="8" />
+    </bytecodeTargetLevel>
   </component>
 </project>

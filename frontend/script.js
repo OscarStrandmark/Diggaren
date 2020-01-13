@@ -1,6 +1,5 @@
 var apiUrl = 'http://localhost:5050';
 
-
 /* Toggle between showing and hiding the navigation menu links when the user clicks on the hamburger menu / bar icon */
 function myFunction() {
     var x = document.getElementById("myLinks");
@@ -29,6 +28,7 @@ for (i = 0; i < coll.length; i++) {
 
 
 var coll = document.getElementsByClassName("pcollapsible");
+
 var i;
 
 for (i = 0; i < coll.length; i++) {
@@ -44,6 +44,7 @@ for (i = 0; i < coll.length; i++) {
 }
   
 // Importerad play paus knapp
+
 var play = false;
 var audio=document.getElementById('player2');
 function toggle() {
@@ -59,6 +60,7 @@ audio.onplaying = function() {
 audio.onpause = function() {
   play = false;
 };
+
 $("#a").click(function(){$(this).toggleClass("fa-play-circle fa-pause-circle")})
 
 
