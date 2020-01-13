@@ -76,7 +76,7 @@ public class StartAPI {
             }, gson :: toJson);
         });
 
-        post("psuedoChannel",((request, response) -> {
+        post("/pseudoChannel",((request, response) -> {
             response.type("application/json"); //definiera svar som json
             return psuedoChannelController.getChannel(request.body());
         }), gson :: toJson);

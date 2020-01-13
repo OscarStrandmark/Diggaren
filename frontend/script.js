@@ -68,7 +68,7 @@ $("#a").click(function(){$(this).toggleClass("fa-play-circle fa-pause-circle")})
 function radio(station) {
   audio = document.getElementById('player2');
   audio.pause();
-  if(station == "p2") {
+  if(station == "P2") {
     audio.src = "https://sverigesradio.se/topsy/direkt/2562-hi-mp3";
 
 	document.cookie = 'channelID=163';
@@ -76,7 +76,7 @@ function radio(station) {
 	$('#p3').toggleClass('selected');
 	$('#p2').toggleClass('selected');
 	updateSongInfo();
-  } else if(station == "p3") {
+  } else if(station == "P3") {
     audio.src = "https://sverigesradio.se/topsy/direkt/164-hi-mp3";
 
 	document.cookie = 'channelID=164';
@@ -147,14 +147,38 @@ function saveSongID(songName, artistName) {
 		contentType: 'application/json',
 		data: JSON.stringify(data),
 		success: function(result) {
-			console.log(result);
-			var songID = result.tracks[0].id;
+            var json = JSON.parse(result);
+			var songID = json.tracks.items[0].id;
+            console.log(json.tracks.items[0].id);
 			setCookie('songID', songID);
 		},
 		error: function(error) {
 			console.log('Error: ' + error.Message);
 		}
 	});	
+}
+
+function getRecommendation() {
+    // Request is sent to fetch recommendations based on the currently playing song
+	$.ajax({
+		url: '/recommendation',
+		type: 'POST',
+		data: JSON.stringify({
+			'authorization': getCookie('accessToken'),
+			'trackID': getCookie('songID')
+		}),
+		contentType: 'application/json',
+		success: function(result) {
+			result = JSON.parse(result);
+			var recommendedName = result['trackName'];
+			var recommendedArtist = result['artistName'];
+            console.log(result);
+			$('#recommendedSong').html(recommendedName + ' - ' + recommendedArtist);
+		},
+		error:function(request, status, error){
+			console.log(request.statusText)
+		}
+	});
 }
 
 // Gets the currently playing song from the radio and presents it in the browser
@@ -186,25 +210,7 @@ function updateSongInfo() {
 			console.log(request.statusText)
 		}
 	});
-	// Request is sent to fetch recommendations based on the currently playing song
-	$.ajax({
-		url: '/recommendation',
-		type: 'POST',
-		data: JSON.stringify({
-			'authorization': getCookie('accessToken'),
-			'trackID': getCookie('songID')
-		}),
-		contentType: 'application/json',
-		success: function(result) {
-			result = JSON.parse(result);
-			var recommendedName = result['trackName'];
-			var recommendedArtist = result['artistName'];
-			$('#recommendedSong').html(recommendedName + ' - ' + recommendedArtist);
-		},
-		error:function(request, status, error){
-			console.log(request.statusText)
-		}
-	});
+    getRecommendation();
 }
 
 $(document).ready(function() {
@@ -276,13 +282,14 @@ function pseudoChannel(type) {
     url: "/pseudoChannel", 
     type: "POST", 
     contentType: "application/json",
-    body: JSON.stringify({
+    data: JSON.stringify({
       "auth": getCookie("accessToken"), 
       "type": type
     }), 
     success: function(result){
+        result = JSON.parse(result);
       radio(result["channel"]);
-        console.log("success!");
+        console.log(result.channel);
     }, error: function(request, status, error){
       console.log(request);
     }

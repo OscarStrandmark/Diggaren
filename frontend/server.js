@@ -62,6 +62,7 @@ app.post('/recommendation', function(req, res) {
   http_request = new httpRequest();
   http_request.onreadystatechange = function () {
     if(http_request.readyState==4 && http_request.status==200) {
+        console.log(http_request);
       res.set('Content-Type', 'application/json');
       res.send(JSON.stringify(http_request.responseText))
     }
@@ -130,7 +131,7 @@ app.post('/search', function(req, res) {
     }));
 });
 
-app.post('/pseudoChannel', function(req, res) {
+app.post('/psuedoChannel', function(req, res) {
   var http_request;
     http_request = new httpRequest();
     http_request.onreadystatechange = function () {
