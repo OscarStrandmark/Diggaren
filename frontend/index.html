@@ -10,7 +10,6 @@
         <link rel="icon" href="bild.jpg">
         <script src="script.js" defer></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     </head>
@@ -18,75 +17,68 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     
         <div class="topnav">
-            <a id="home" href="#home">M</a>
-            <!-- Navigation links (hidden by default) -->
             <div id="myLinks">
-              <a href="#news">P1</a>
-              <a href="#contact">P2</a>
-              <a href="/login">Logga in med Spotify </a>
+				<div id='p2' class="inline channels" onclick="radio('p2')">P2</div>
+				<div id='p3' class="inline channels selected" onclick="radio('p3')">P3</div>
+				<div class="inline channels">
+					<button type="button" class="pcollapsible">
+						Pseudokanaler
+					</button>
+					<div class="pcontent">
+						<p>Lorem ipsum...</p>
+					</div>
+            	</div>
             </div>
-            <!-- "Hamburger menu" / "Bar icon" to toggle the navigation links -->
-            <a href="javascript:void(0);" class="icon" onclick="myFunction()">
-              <i class="fa fa-bars"></i>
-            </a>
           </div>
 
-        <div class="spelas">
+        <div id='player'>
             <!-- Importerad play paus knapp-->
-            
-                    <audio id="player2" src="https://www.bensound.com/bensound-music/bensound-summer.mp3"></audio>    
-                    <a onclick="toggle()"><i id="a" class="fa fa-play-circle fa-2x"></i></a>
-        
-            Radiokanal som spelas
+            <audio controls id="player2" src="https://sverigesradio.se/topsy/direkt/164-hi-mp3"></audio>   
          </div>
         
-          <h1 class="title">
+          <h1 class='title'>
               Spelas just nu:
           </h1>
-          <h2 class="title">
-              Låttext & artist
+          <h2 class="title" id='nowPlaying'>
           </h2>
-          <!-- <button class="button"><a href="">Lägg till låt</a></button> -->
+          <center>
           <div class="dropdown">
-            <button class="dropbtn">Add song to playlist</button>
-            <div class="dropdown-content">
-            </div>
+            <button class="dropbtn" onclick='toggleDropdown()'>Lägg till låt i spellista</button>
+                <div id='myDropdown' class="dropdown-content">
+                
+                </div i>
           </div>
-          <h1 class="title">
-              Föregående låt
-          </h1>
-          <h2 class="title">Låttext & artist</h2>
+        </center>
 
             <ul class="flex-container">
                 <li class="flex-item">
                     <button type="button" class="collapsible">
-                        Recommended song
+                        Rekommenderad låt
                     </button>
                     <div class="content">
-                            <p>Lorem ipsum...</p>
+                            <p id='recommendedSong'>Ingen låt spelas just nu</p>
+
                     </div>
                 </li>
                 <li class="flex-item">
                     <button type="button" class="collapsible">
-                        Recommended artist
+                        Föregående låtar
                     </button>
                     <div class="content">
-                        <p>Lorem ipsum...</p>
+                        <p id='previousSong'>Föregående låtar:</p>
                     </div>
                 </li>
                 <li class="flex-item">
-                    <button type="button" class="collapsible">
-                        Song info
+                    <button type="button" class="refresh">
+                        <a href="/refresh">Uppdatera</a>
+
                     </button>
                     <div class="content">
                         <p>Lorem ipsum...</p>
                     </div>
                 </li>
             </ul>
- 
-            
-
-    </body>
+  </body>
 </html>
  
     
