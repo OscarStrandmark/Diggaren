@@ -1,4 +1,4 @@
-var apiUrl = 'localhost:5050';
+var apiUrl = 'http://localhost:5050';
 
 
 /* Toggle between showing and hiding the navigation menu links when the user clicks on the hamburger menu / bar icon */
@@ -68,14 +68,20 @@ function radio(station) {
   audio.pause();
   if(station == "p2") {
     audio.src = "https://sverigesradio.se/topsy/direkt/2562-hi-mp3";
-    $("#nowPlaying").html("Nu spelas radiokanal P2");
+
+	document.cookie = 'channelID=163';
+
 	$('#p3').toggleClass('selected');
 	$('#p2').toggleClass('selected');
+	updateSongInfo();
   } else if(station == "p3") {
     audio.src = "https://sverigesradio.se/topsy/direkt/164-hi-mp3";
-	$("#nowPlaying").html("Nu spelas radiokanal P3");
+
+	document.cookie = 'channelID=164';
+
 	$('#p3').toggleClass('selected');
 	$('#p2').toggleClass('selected');
+	updateSongInfo();
   }
   audio.load();
   if(play == true) {
@@ -128,16 +134,19 @@ window.onclick = function(event) {
 
 // Saves the currently playing songs Spotify ID to a cookie
 function saveSongID(songName, artistName) {
+	var data = {};
+	data.auth = getCookie('accessToken');
+	data.type = 'track';
+	data.query = songName + " " + artistName;
+	console.log(data.query);
 	$.ajax({
-		url: apiUrl + '/spotify/search',
+		url: '/search',
 		type: 'POST',
-		body: {
-			'auth': getCookie('accessToken'),
-			'type': 'song',
-			'query': songName + ' ' + artistName
-		},
+		contentType: 'application/json',
+		data: JSON.stringify(data),
 		success: function(result) {
-			var songID = result.items[0].id;
+			console.log(result);
+			var songID = result.tracks[0].id;
 			setCookie('songID', songID);
 		},
 		error: function(error) {
@@ -148,16 +157,18 @@ function saveSongID(songName, artistName) {
 
 // Gets the currently playing song from the radio and presents it in the browser
 function updateSongInfo() {
-	var nowPlaying = '';
+	var nowPlaying = 'Just nu spelas ingen musik.';
+	var data = {};
+	data.channelID = getCookie('channelID');
 	// Request is sent to fetch currently playing song
 	$.ajax({
-		url: apiUrl + '/SR/currentlyPlaying',
 		type: 'POST',
-		body: {
-			'channelID': getCookie('channelID')
-		},
+		url: '/currently',
+		data: JSON.stringify(data),
+		contentType: 'application/json',
 		success: function(result) {
 			// If there is a song currently playing, save the ID to cookie and present the song info to the browser
+			result = JSON.parse(result);
 			if(result['playingSongName'] != null) {
 				var songName = result['playingSongName'];
 				var artistName = result['playingSongArtist'];
@@ -165,28 +176,27 @@ function updateSongInfo() {
 				var startTime = startTime.getMilliseconds() - new Date().getMilliseconds;
 				nowPlaying = songName + ' - ' + artistName;
 				saveSongID(songName, artistName);
-			} else {
-				nowPlaying = 'Just nu spelas ingen musik';
-			}
+				//setTimeout(updateSongInfo(), startTime);
+			} 
 			$('#nowPlaying').html(nowPlaying);
-			setTimeout(updateSongInfo(), startTime);
 		},
 		error:function(request, status, error){
 			console.log(request.statusText)
 		}
 	});
-
 	// Request is sent to fetch recommendations based on the currently playing song
 	$.ajax({
-		url: apiUrl + '/spotify/recommendation',
+		url: '/recommendation',
 		type: 'POST',
-		body: {
+		data: JSON.stringify({
 			'authorization': getCookie('accessToken'),
 			'trackID': getCookie('songID')
-		},
+		}),
+		contentType: 'application/json',
 		success: function(result) {
-			var recommendedName = callback['trackName'];
-			var recommendedArtist = callback['artistName'];
+			result = JSON.parse(result);
+			var recommendedName = result['trackName'];
+			var recommendedArtist = result['artistName'];
 			$('#recommendedSong').html(recommendedName + ' - ' + recommendedArtist);
 		},
 		error:function(request, status, error){
@@ -201,14 +211,15 @@ $(document).ready(function() {
 
 // Adds the given song to the given playlist on Spotify
 function addToPlaylist(songID, playlistID) {
+	var data = {};
+	data.playlist_id = playlistID;
+	data.auth = getCookie('accessToken');
+	data.track_id = getCookie('songID');
 	$.ajax( {
-		url: apiUrl + '/spotify/playlist/add',
+		url: '/addSong',
 		type: 'POST',
-		body: {
-			'playlist_id': playlistID,
-			'auth': getCookie('accessToken'),
-			'track_id': getCookie('songID')
-		},
+		contentType: 'application/json',
+		body: JSON.stringify(data),
 		success: function(result) {
 			alert('Song added to playlist');
 		},
@@ -219,20 +230,22 @@ function addToPlaylist(songID, playlistID) {
 }
 
 
+
 // When website is loaded, run function to create dropdown menu with playlists
 $(document).ready(function(){
-  var access_token = getCookie("accessToken");
-  // Get request is made to fetch playlists for current user
-  $.ajax({   
-      body: {
-        'Accept' : 'application/json',
-        'Content-Type' : 'application/json',
-        'auth' : access_token
-      },
-      url: apiUrl + '/spotify/playlist/fetch',
+	var access_token = getCookie("accessToken");
+
+	var data = {};
+	data.auth = access_token;
+//   Get request is made to fetch playlists for current user
+  $.ajax({
       type:"POST",
+      url: '/fetch',
+      data: JSON.stringify(data),
+	  contentType: 'application/json',
       success: function(result) {
-        //  on success loops through playlists and creates a button for each of them in the dropdown menu
+		//  on success loops through playlists and creates a button for each of them in the dropdown menu
+		result = JSON.parse(result);
         for(var key in result.items) {
           btn = $('<div />', {
             class: "spellista",
@@ -245,11 +258,11 @@ $(document).ready(function(){
                }
             }
           });
-        $('.dropdown-content').append(btn);
+		$('.dropdown-content').append(btn);
         }
 
       },
-      error:function(request, status, error){
+      error: function(request, status, error){
         console.log(request.statusText)
       }
   })

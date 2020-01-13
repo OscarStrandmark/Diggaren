@@ -5,6 +5,8 @@ var request = require('request'); // "Request" library
 var cors = require('cors');
 var querystring = require('querystring');
 var cookieParser = require('cookie-parser');
+var httpRequest = require('xmlhttprequest').XMLHttpRequest;
+var bodyParser = require('body-parser');
 
 var client_id = 'e9f8cccef4a84a71b2a925f5455fa84c'; // Your client id
 var client_secret = 'ed8e7c22f630455bbdcb3fdd46027456'; // Your secret
@@ -31,15 +33,103 @@ var app = express();
 
 app.use(express.static(__dirname, {index: 'login.html'}))
    .use(cors())
-   .use(cookieParser());
+   .use(cookieParser())
+   .use(bodyParser.json());
 
 
 app.get('/home', function(req, res) {
     res.sendFile(__dirname + '/index.html');
 });
 
+app.post('/fetch', function(req, res) {
+    var http_request;
+    http_request = new httpRequest();
+    http_request.onreadystatechange = function () {
+      if(http_request.readyState==4 && http_request.status==200) {
+        res.set('Content-Type', 'application/json');
+        res.send(JSON.stringify(http_request.responseText))
+      }
+    };
+    http_request.open("POST", "http://localhost:5050/spotify/playlist/fetch");
+    http_request.withCredentials = true;
+    http_request.setRequestHeader("Content-Type", "application/json");
+    http_request.send(JSON.stringify({
+      'auth': req.body.auth
+    }));
+});
 
+app.post('/recommendation', function(req, res) {
+  var http_request;
+  http_request = new httpRequest();
+  http_request.onreadystatechange = function () {
+    if(http_request.readyState==4 && http_request.status==200) {
+      res.set('Content-Type', 'application/json');
+      res.send(JSON.stringify(http_request.responseText))
+    }
+  };
+  http_request.open("POST", "http://localhost:5050/spotify/recommendation");
+  http_request.withCredentials = true;
+  http_request.setRequestHeader("Content-Type", "application/json");
+  http_request.send(JSON.stringify({
+    'authorization': req.body.auth,
+    'trackID' : req.body.trackID
+  }));
+});
 
+app.post('/currently', function(req, res) {
+  var http_request;
+    http_request = new httpRequest();
+    http_request.onreadystatechange = function () {
+      if(http_request.readyState==4 && http_request.status==200) {
+        res.set('Content-Type', 'application/json');
+        res.send(JSON.stringify(http_request.responseText));
+      }
+    };
+    http_request.open("POST", "http://localhost:5050/SR/currentlyPlaying");
+    http_request.withCredentials = true;
+    http_request.setRequestHeader("Content-Type", "application/json");
+    http_request.send(JSON.stringify({
+      'channelID': req.body.channelID
+    }));
+});
+
+app.post('/addSong', function(req, res) {
+  var http_request;
+    http_request = new httpRequest();
+    http_request.onreadystatechange = function () {
+      if(http_request.readyState==4 && http_request.status==200) {
+        res.set('Content-Type', 'application/json');
+        res.send(JSON.stringify(http_request.responseText));
+      }
+    };
+    http_request.open("POST", "http://localhost:5050/spotify/search");
+    http_request.withCredentials = true;
+    http_request.setRequestHeader("Content-Type", "application/json");
+    http_request.send(JSON.stringify({
+      'playlist_id': req.body.playlist_id,
+      'auth': req.body.auth,
+      'track_id': req.body.track_id
+    }));
+  });
+
+app.post('/search', function(req, res) {
+  var http_request;
+    http_request = new httpRequest();
+    http_request.onreadystatechange = function () {
+      if(http_request.readyState==4 && http_request.status==200) {
+        res.set('Content-Type', 'application/json');
+        res.send(JSON.stringify(http_request.responseText));
+      }
+    };
+    http_request.open("POST", "http://localhost:5050/spotify/search");
+    http_request.withCredentials = true;
+    http_request.setRequestHeader("Content-Type", "application/json");
+    http_request.send(JSON.stringify({
+      'auth': req.body.auth,
+      'type': req.body.type,
+      'query': req.body.query
+    }));
+});
 
 // get request is made from the browser
 app.get('/login', function(req, res) {
@@ -129,7 +219,7 @@ app.get('/callback', function(req, res) {
   });
 
   app.get('/refresh', function(req, res) {
-
+    console.log("Refreshing access token")
     // requesting access token from refresh token
     var refresh_token = req.cookies['refreshToken'];
     var authOptions = {
