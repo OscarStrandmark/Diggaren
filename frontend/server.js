@@ -1,5 +1,3 @@
-
-
 var express = require('express'); // Express web server framework
 var request = require('request'); // "Request" library
 var cors = require('cors');
@@ -129,6 +127,24 @@ app.post('/search', function(req, res) {
       'auth': req.body.auth,
       'type': req.body.type,
       'query': req.body.query
+    }));
+});
+
+app.post('/pseudoChannel', function(req, res) {
+  var http_request;
+    http_request = new httpRequest();
+    http_request.onreadystatechange = function () {
+      if(http_request.readyState==4 && http_request.status==200) {
+        res.set('Content-Type', 'application/json');
+        res.send(JSON.stringify(http_request.responseText));
+      }
+    };
+    http_request.open("POST", "http://localhost:5050/pseudoChannel");
+    http_request.withCredentials = true;
+    http_request.setRequestHeader("Content-Type", "application/json");
+    http_request.send(JSON.stringify({
+      'auth': req.body.auth,
+      'type': req.body.type,
     }));
 });
 

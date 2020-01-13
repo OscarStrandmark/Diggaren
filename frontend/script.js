@@ -269,3 +269,23 @@ $(document).ready(function(){
       }
   })
 });
+
+//Changes the radio channel depending on the pseudo channel
+function pseudoChannel(type) {
+  $.ajax({
+    url: "/pseudoChannel", 
+    type: "POST", 
+    contentType: "application/json",
+    body: JSON.stringify({
+      "auth": getCookie("accessToken"), 
+      "type": type
+    }), 
+    success: function(result){
+      radio(result["channel"]);
+        console.log("success!");
+    }, error: function(request, status, error){
+      console.log(request);
+    }
+
+  })
+}
