@@ -25,17 +25,9 @@ public class SpotifyGetPlaylistController {
         headers.add("Content-Type","application/json");
 
         //Get userId
-        HttpEntity<String> reqEntityGetUserId = new HttpEntity<String>("",headers);
-        ResponseEntity<String> resEntityGetUserId = new RestTemplate().exchange("https://api.spotify.com/v1/me", HttpMethod.GET, reqEntityGetUserId, String.class);
+        HttpEntity<String> requestEntity = new HttpEntity<String>("",headers);
+        ResponseEntity<String> responseEntity = new RestTemplate().exchange("https://api.spotify.com/v1/me/playlists", HttpMethod.GET, requestEntity, String.class);
 
-        //Parse userID
-        JsonParser parser = new JsonParser();
-        String response = resEntityGetUserId.getBody();
-        String userID = parser.parse(response).getAsJsonObject().get("id").getAsString();
-
-        //Get list of playlists
-        HttpEntity<String> reqEntity = new HttpEntity<String>("",headers);
-        ResponseEntity<String> resEntity = new RestTemplate().exchange("https://api.spotify.com/v1/users/" + userID + "/playlists", HttpMethod.GET, reqEntity, String.class);
-        return resEntity.getBody();
+        return responseEntity.getBody();
     }
 }

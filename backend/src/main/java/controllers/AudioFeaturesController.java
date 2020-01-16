@@ -30,7 +30,7 @@ public class AudioFeaturesController {
     public AudioFeatures getAudioFeatures(TrackMessage msg) {
         //getting the recommendation from spotify API by sending GET req
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization","Bearer "+msg.getAuthorization());
+        headers.add("Authorization","Bearer "+msg.getAuth());
         headers.add("Content-Type","application/json");
         HttpEntity<String> reqEntity = new HttpEntity<String>("",headers);
         ResponseEntity<String> resEntity = new RestTemplate().exchange(

@@ -30,7 +30,7 @@ public class RecommendationsController {
     public Recommendation getRecommendation(TrackMessage msg) {
         //getting the recommendation from spotify API by sending GET req
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization","Bearer "+msg.getAuthorization());
+        headers.add("Authorization","Bearer "+msg.getAuth());
         headers.add("Content-Type","application/json");
         HttpEntity<String> reqEntity = new HttpEntity<String>("",headers);
         ResponseEntity<String> resEntity = new RestTemplate().exchange("https://api.spotify.com/v1/recommendations?" +
@@ -47,6 +47,8 @@ public class RecommendationsController {
         JsonObject artistInfo = trackInfo.getAsJsonArray("artists").get(0).getAsJsonObject();
         String artistName = artistInfo.get("name").getAsString();
         String artistID = artistInfo.get("id").getAsString();
+
+        System.out.println(artistName + " - " + trackName);
 
         return new Recommendation(trackName, trackID, artistName, artistID);
     }

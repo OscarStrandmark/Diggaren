@@ -54,8 +54,11 @@ public class StartAPI {
           
             //MARK: Recommendations
             post("/recommendation", (request, response) -> {
+                System.out.println("recommending song");
                 response.type("application/json"); //definiera svar som json
                 TrackMessage msg = gson.fromJson(request.body(), TrackMessage.class); //hämta json object från body som ett definierat objekt
+                System.out.println("auth: " + msg.getAuth());
+                System.out.println("trackID " + msg.getTrackID());
                 return recommendationsController.getRecommendation(msg);
             }, gson :: toJson);
 

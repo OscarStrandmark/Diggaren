@@ -10,20 +10,20 @@ package models;
  * song that will be used as seed for the requested data.
  */
 public class TrackMessage {
-    private String authorization;
+    private String auth;
     private String trackID;
 
-    public TrackMessage(String authorization, String trackID) {
-        this.authorization = authorization;
+    public TrackMessage(String auth, String trackID) {
+        this.auth = auth;
         this.trackID = trackID;
     }
 
-    public String getAuthorization() {
-        return authorization;
+    public String getAuth() {
+        return auth;
     }
 
-    public void setAuthorization(String authorization) {
-        this.authorization = authorization;
+    public void setAuth(String auth) {
+        this.auth = auth;
     }
 
     public String getTrackID() {

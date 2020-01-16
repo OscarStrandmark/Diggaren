@@ -58,6 +58,7 @@ app.post('/fetch', function(req, res) {
 });
 
 app.post('/recommendation', function(req, res) {
+    console.log(req.body.auth);
   var http_request;
   http_request = new httpRequest();
   http_request.onreadystatechange = function () {
@@ -71,7 +72,7 @@ app.post('/recommendation', function(req, res) {
   http_request.withCredentials = true;
   http_request.setRequestHeader("Content-Type", "application/json");
   http_request.send(JSON.stringify({
-    'authorization': req.body.auth,
+    'auth': req.body.auth,
     'trackID' : req.body.trackID
   }));
 });
@@ -131,7 +132,7 @@ app.post('/search', function(req, res) {
     }));
 });
 
-app.post('/psuedoChannel', function(req, res) {
+app.post('/pseudoChannel', function(req, res) {
   var http_request;
     http_request = new httpRequest();
     http_request.onreadystatechange = function () {

@@ -46,7 +46,6 @@ public class PseudoChannelController {
 
             } catch (Exception e){
                 successP2 = false;
-                e.printStackTrace();
             }
 
             try { //Try to get p3
@@ -55,7 +54,6 @@ public class PseudoChannelController {
                 songIdP3 = trackMapP3.get("id").getAsString();
             } catch (Exception e){
                 successP3 = false;
-                e.printStackTrace();
             }
 
             PseudoChannelSelectionResponse response = null;
@@ -116,11 +114,13 @@ public class PseudoChannelController {
                 } else {
                     result = "P3";
                 }
+                System.out.println(result);
                 response = new PseudoChannelSelectionResponse(result);
             }
             return response;
         }
         //If there was an error, or both songs are not playing music: return -1
+        System.out.println(-1);
         return new PseudoChannelSelectionResponse("-1");
     }
 }

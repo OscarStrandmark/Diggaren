@@ -27,8 +27,6 @@ public final class CorsFilter {
                 corsHeaders.forEach((key, value) -> {
                     response.header(key, value);
                 });
-                System.out.println(request.body());
-                System.out.println(response.body());
             }
         };
         Spark.after(filter);
