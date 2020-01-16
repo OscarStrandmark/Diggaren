@@ -26,7 +26,7 @@ font-size: 24px;
 }
 
 #loginbutton{
-/background-color: rgb(20, 157, 20);
+background-color: rgb(20, 157, 20);
 border: none;
 padding: 35px 52px;
 text-align: center;
@@ -51,6 +51,7 @@ text-decoration: none;
 }
 #loginbutton:hover {
 background-color: rgb(95, 205, 95);
+cursor: pointer;
 }
 
 .topnav {
@@ -64,7 +65,7 @@ width: 100%;
 
 /* Dropdown Button */
 .dropbtn {
-  background-color: #3498DB;
+  background-color: rgb(20, 157, 20);
 
   color: white;
   padding: 16px;
@@ -75,7 +76,7 @@ width: 100%;
 
 /* Dropdown button on hover & focus */
 .dropbtn:hover, .dropbtn:focus {
-  background-color: #2980B9;
+  background-color: rgb(95, 205, 95);
 
 }
 
