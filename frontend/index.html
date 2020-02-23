@@ -18,13 +18,20 @@
     
         <div class="topnav">
             <div id="myLinks">
-				<div id='p2' class="inline channels" onclick="radio('P2')">P2</div>
-				<div id='p3' class="inline channels selected" onclick="radio('P3')">P3</div>
-				<div class="inline channels">
-					<button type="button" class="pcollapsible">
+                <!-- <div id='p2' class="inline channels" onclick="radio('P2')">Kanaler</div> -->
+                        <div class="dropdown">
+                          <button class="dropbtn">Kanaler</button>
+                          <div class="dropdown-content">
+                            <a href="#">Link 1</a>
+                            <a href="#">Link 2</a>
+                            <a href="#">Link 3</a>
+                          </div>
+                        </div>
+				    <div class="dropdown">
+					<button type="button" class="dropbtn">
 						Pseudokanaler
 					</button>
-					<div class="pcontent">
+					<div class="dropdown-content">
 						<button class="pseudochannel" onclick="pseudoChannel('dance')">Dance</button>
                         <button class="pseudochannel" onclick="pseudoChannel('instrumental')">Instrumental</button>
                         <button class="pseudochannel" onclick="pseudoChannel('hi_energy')">High Energy</button>
