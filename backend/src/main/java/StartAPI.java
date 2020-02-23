@@ -22,7 +22,7 @@ public class StartAPI {
         RecommendationsController recommendationsController = new RecommendationsController();
         SpotifyGetPlaylistController spotifyGetPlaylist = new SpotifyGetPlaylistController();
         SpotifySearchController spotifySearchController = new SpotifySearchController();
-        AudioFeaturesController audioFeaturesController = new AudioFeaturesController();
+        SpotifyAudioFeaturesController audioFeaturesController = new SpotifyAudioFeaturesController();
         PseudoChannelController psuedoChannelController = new PseudoChannelController();
         SpotifyGetAlbumController getAlbumController = new SpotifyGetAlbumController();
         AddToLibraryController addToLibraryController = new AddToLibraryController();
@@ -67,7 +67,7 @@ public class StartAPI {
                 response.type("application/json"); //definiera svar som json
                 TrackMessage msg = gson.fromJson(request.body(), TrackMessage.class); //hämta json object från body som ett definierat objekt
                 return audioFeaturesController.getAudioFeatures(msg);
-            }, gson :: toJson);
+            });
         });
 
         path("/SR", () -> {
