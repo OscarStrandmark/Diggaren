@@ -2,11 +2,9 @@ package controllers;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import models.ErrorObject;
 import models.Search;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -32,6 +30,10 @@ public class SpotifySearchController {
         //Do call to spotify API
         HttpEntity<String> reqEntity = new HttpEntity<String>("",headers);
         ResponseEntity<String> resEntity = new RestTemplate().exchange("https://api.spotify.com/v1/search?" + "q=" + searchData.getQuery() + "&" + "type=" + searchData.getType(),HttpMethod.GET ,reqEntity ,String.class);
+
+        if(resEntity.getStatusCode() != HttpStatus.OK){
+            return new Gson().toJson(new ErrorObject(resEntity.getStatusCodeValue()));
+        }
 
         return resEntity.getBody();
     }
