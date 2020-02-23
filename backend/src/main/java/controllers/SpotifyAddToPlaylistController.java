@@ -1,10 +1,8 @@
 package controllers;
 
 import com.google.gson.Gson;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import models.ErrorObject;
+import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 import models.AddToPlaylist;
 
@@ -24,6 +22,11 @@ public class SpotifyAddToPlaylistController {
         //Do call to spotify api
         HttpEntity<String> reqEntity = new HttpEntity<String>("",headers);
         ResponseEntity<String> resEntity = new RestTemplate().exchange("https://api.spotify.com/v1/playlists/" + addToPlaylist.getPlaylist_id() + "/tracks?uris=spotify:track:" + addToPlaylist.getTrack_id(), HttpMethod.POST ,reqEntity ,String.class);
+
+        //If unexpected status code, return the error object.
+        if(resEntity.getStatusCode() != HttpStatus.CREATED){
+            return new Gson().toJson(new ErrorObject(resEntity.getStatusCodeValue()));
+        }
 
         return resEntity.getBody();
     }
