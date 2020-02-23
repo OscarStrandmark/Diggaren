@@ -2,10 +2,8 @@ package controllers;
 
 import com.google.gson.*;
 import models.Album;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import models.ErrorObject;
+import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 import models.TrackMessage;
 
@@ -57,6 +55,10 @@ public class SpotifyGetAlbumController {
         }
         Album album = new Album(albumName, artistNames, albumID, albumType);
         String albumAsJson = gson.toJson(album);
+
+        if(resEntity.getStatusCode() != HttpStatus.valueOf(200)){
+            return gson.toJson( new ErrorObject(resEntity.getStatusCodeValue()));
+        }
 
         return albumAsJson;
     }
