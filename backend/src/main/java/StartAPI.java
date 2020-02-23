@@ -60,7 +60,7 @@ public class StartAPI {
                 System.out.println("auth: " + msg.getAuth());
                 System.out.println("trackID " + msg.getTrackID());
                 return recommendationsController.getRecommendation(msg);
-            }, gson :: toJson);
+            });
 
             //MARK: AudioFeatures
             post("/audioFeatures", (request, response) -> {

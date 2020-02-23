@@ -2,10 +2,7 @@ package controllers;
 
 import com.google.gson.*;
 import models.*;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 import models.TrackMessage;
 
@@ -27,7 +24,8 @@ public class RecommendationsController {
      * @return - Recommendation object containing processed and packaged data
      * from Spotify API
      */
-    public Recommendation getRecommendation(TrackMessage msg) {
+    public String getRecommendation(TrackMessage msg) {
+        Gson gson = new Gson();
         //getting the recommendation from spotify API by sending GET req
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization","Bearer "+msg.getAuth());
@@ -38,6 +36,9 @@ public class RecommendationsController {
                         "&min_energy=0.4&min_popularity=50",
                 HttpMethod.GET, reqEntity, String.class);
 
+        if(resEntity.getStatusCode() != HttpStatus.valueOf(200)){
+            return gson.toJson( new ErrorObject(resEntity.getStatusCodeValue()));
+        }
 
         //since the response is a nestled json object and we need to convert it to an map and fetch the wanted data
         JsonParser parser = new JsonParser();
@@ -50,7 +51,8 @@ public class RecommendationsController {
 
         System.out.println(artistName + " - " + trackName);
 
-        return new Recommendation(trackName, trackID, artistName, artistID);
+        return gson.toJson( new Recommendation(trackName, trackID, artistName, artistID));
+
     }
 
 
