@@ -2,11 +2,9 @@ package controllers;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonParser;
+import models.ErrorObject;
 import models.GetPlaylist;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -28,6 +26,10 @@ public class SpotifyGetPlaylistController {
         HttpEntity<String> requestEntity = new HttpEntity<String>("",headers);
         ResponseEntity<String> responseEntity = new RestTemplate().exchange("https://api.spotify.com/v1/me/playlists", HttpMethod.GET, requestEntity, String.class);
 
+        if(responseEntity.getStatusCode() != HttpStatus.valueOf(200)){
+            Gson gson = new Gson();
+            return gson.toJson( new ErrorObject(responseEntity.getStatusCodeValue()));
+        }
         return responseEntity.getBody();
     }
 }
