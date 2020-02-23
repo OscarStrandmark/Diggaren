@@ -58,8 +58,8 @@
     </option>
   </component>
   <component name="RunManager" selected="Application.StartAPI">
-    <configuration name="AudioFeaturesController" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="controllers.AudioFeaturesController" />
+    <configuration name="SRController" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="controllers.SRController" />
       <module name="backend" />
       <extension name="coverage">
         <pattern>
@@ -71,8 +71,8 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="SRController" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="controllers.SRController" />
+    <configuration name="SpotifyAudioFeaturesController" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="controllers.SpotifyAudioFeaturesController" />
       <module name="backend" />
       <extension name="coverage">
         <pattern>
@@ -117,7 +117,7 @@
         <item itemvalue="Application.testclass" />
         <item itemvalue="Application.TestClass" />
         <item itemvalue="Application.SRController" />
-        <item itemvalue="Application.AudioFeaturesController" />
+        <item itemvalue="Application.SpotifyAudioFeaturesController" />
       </list>
     </recent_temporary>
   </component>

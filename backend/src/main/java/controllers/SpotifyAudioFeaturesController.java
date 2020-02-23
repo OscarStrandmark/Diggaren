@@ -1,12 +1,10 @@
 package controllers;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import models.*;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 import models.TrackMessage;
 
@@ -15,9 +13,9 @@ import models.TrackMessage;
  * sends request to Spotify API and process the received data and
  * package it to an AudioFeatures object.
  */
-public class AudioFeaturesController {
+public class SpotifyAudioFeaturesController {
 
-    public AudioFeaturesController() {
+    public SpotifyAudioFeaturesController() {
     }
 
     /**
@@ -27,7 +25,7 @@ public class AudioFeaturesController {
      * @return - AudioFeatures object containing values of different audio
      * meassures.
      */
-    public AudioFeatures getAudioFeatures(TrackMessage msg) {
+    public String getAudioFeatures(TrackMessage msg) {
         //getting the recommendation from spotify API by sending GET req
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization","Bearer "+msg.getAuth());
@@ -36,6 +34,11 @@ public class AudioFeaturesController {
         ResponseEntity<String> resEntity = new RestTemplate().exchange(
                 "https://api.spotify.com/v1/audio-features/"+msg.getTrackID(),
                 HttpMethod.GET, reqEntity, String.class);
+
+        //Om fel statuskod, returnera errorobjektet.
+        if(resEntity.getStatusCode() != HttpStatus.OK){
+            return new Gson().toJson(new ErrorObject(resEntity.getStatusCodeValue()));
+        }
 
         //Parse the answer in JSON
         JsonParser parser = new JsonParser();
@@ -52,6 +55,7 @@ public class AudioFeaturesController {
                 featuresObject.get("valence").getAsString(),
                 featuresObject.get("tempo").getAsString()
         );
-        return audioFeatures;
+
+        return new Gson().toJson(audioFeatures);
     }
 }

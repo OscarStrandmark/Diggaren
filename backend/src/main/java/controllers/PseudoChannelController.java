@@ -70,7 +70,7 @@ public class PseudoChannelController {
             //If both stations are playing music found in the spotify catalog.
             if(successP2 && successP3){
 
-                AudioFeaturesController audioFeaturesController = new AudioFeaturesController();
+                SpotifyAudioFeaturesController audioFeaturesController = new SpotifyAudioFeaturesController();
 
                 AudioFeatures featuresP2 = audioFeaturesController.getAudioFeatures(new TrackMessage(selection.getAuth(),songIdP2));
                 AudioFeatures featuresP3 = audioFeaturesController.getAudioFeatures(new TrackMessage(selection.getAuth(),songIdP3));
