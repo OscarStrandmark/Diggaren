@@ -1,12 +1,11 @@
 package controllers;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import models.ErrorObject;
 import models.PlayingSong;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 import models.SRMessage;
 
@@ -25,13 +24,17 @@ public class SRController {
      * @return - PlayingSong containing information about current playing song and
      * time of next song starting.
      */
-    public PlayingSong getSongPlaying(SRMessage msg){
+    public String getSongPlaying(SRMessage msg){
         //getting the recommendation from spotify API by sending GET request
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<String> reqEntity = new HttpEntity<String>("",headers);
         ResponseEntity<String> resEntity = new RestTemplate().exchange("http://api.sr.se/api/v2/playlists/" +
                         "rightnow?channelid="+msg.getChannelID()+"&format=JSON",
                 HttpMethod.GET, reqEntity, String.class);
+
+        if(resEntity.getStatusCode() != HttpStatus.OK){
+            return new Gson().toJson(new ErrorObject(resEntity.getStatusCodeValue()));
+        }
 
         //Json parser to parse the API response in JSON
         JsonParser parser = new JsonParser();
@@ -50,6 +53,6 @@ public class SRController {
         String nextSongStartTime = nextSongObject.get("starttimeutc").getAsString();
         PlayingSong song = new PlayingSong(currentSongName, currentSongArtist, nextSongStartTime);
 
-        return song;
+        return new Gson().toJson(song);
     }
 }
