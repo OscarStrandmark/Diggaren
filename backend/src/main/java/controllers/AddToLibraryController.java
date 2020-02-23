@@ -2,9 +2,9 @@ package controllers;
 
 import com.google.gson.Gson;
 import models.AddToLibrary;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+
+import models.ErrorObject;
+import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.http.HttpHeaders;
@@ -24,6 +24,11 @@ public class AddToLibraryController {
         //Do the api call to spotify and return the response.
         HttpEntity<String> reqEntity = new HttpEntity<String>("",headers);
         ResponseEntity<String> resEntity = new RestTemplate().exchange("https://api.spotify.com/v1/me/tracks?ids=" + libraryData.getTrack_id(), HttpMethod.PUT ,reqEntity ,String.class);
+
+        if(resEntity.getStatusCode() != HttpStatus.valueOf(200)){
+            Gson gson = new Gson();
+            return gson.toJson( new ErrorObject(resEntity.getStatusCodeValue()));
+        }
         return resEntity.getBody();
     }
 }

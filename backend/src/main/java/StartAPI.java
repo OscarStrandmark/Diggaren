@@ -60,7 +60,7 @@ public class StartAPI {
                 System.out.println("auth: " + msg.getAuth());
                 System.out.println("trackID " + msg.getTrackID());
                 return recommendationsController.getRecommendation(msg);
-            }, gson :: toJson);
+            });
 
             //MARK: AudioFeatures
             post("/audioFeatures", (request, response) -> {
@@ -76,7 +76,7 @@ public class StartAPI {
                 response.type("application/json"); //definiera svar som json
                 SRMessage msg = gson.fromJson(request.body(), SRMessage.class); //hämta json object från body som ett definierat objekt
                 return srController.getSongPlaying(msg);
-            }, gson :: toJson);
+            });
         });
 
         post("/pseudoChannel",((request, response) -> {

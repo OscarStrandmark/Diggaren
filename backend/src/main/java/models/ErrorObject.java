@@ -6,6 +6,4 @@ public class ErrorObject {
     public ErrorObject(int statusCode){
         this.statusCode = statusCode;
     }
-
-
 }
