@@ -2,9 +2,12 @@ package controllers;
 
 import com.google.gson.Gson;
 import models.AddToLibrary;
+
 import models.ErrorObject;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
+
+import java.net.http.HttpHeaders;
 
 /**
  * This class is responsible for adding a song to a users library.
