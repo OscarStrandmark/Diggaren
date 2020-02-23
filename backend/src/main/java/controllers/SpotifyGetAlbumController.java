@@ -56,7 +56,7 @@ public class SpotifyGetAlbumController {
         Album album = new Album(albumName, artistNames, albumID, albumType);
         String albumAsJson = gson.toJson(album);
 
-        if(resEntity.getStatusCode() != HttpStatus.valueOf(200)){
+        if(resEntity.getStatusCode() != HttpStatus.OK){
             return gson.toJson( new ErrorObject(resEntity.getStatusCodeValue()));
         }
 

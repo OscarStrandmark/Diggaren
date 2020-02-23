@@ -26,7 +26,7 @@ public class SpotifyGetPlaylistController {
         HttpEntity<String> requestEntity = new HttpEntity<String>("",headers);
         ResponseEntity<String> responseEntity = new RestTemplate().exchange("https://api.spotify.com/v1/me/playlists", HttpMethod.GET, requestEntity, String.class);
 
-        if(responseEntity.getStatusCode() != HttpStatus.valueOf(200)){
+        if(responseEntity.getStatusCode() != HttpStatus.OK){
             Gson gson = new Gson();
             return gson.toJson( new ErrorObject(responseEntity.getStatusCodeValue()));
         }

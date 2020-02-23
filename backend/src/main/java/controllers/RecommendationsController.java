@@ -36,7 +36,7 @@ public class RecommendationsController {
                         "&min_energy=0.4&min_popularity=50",
                 HttpMethod.GET, reqEntity, String.class);
 
-        if(resEntity.getStatusCode() != HttpStatus.valueOf(200)){
+        if(resEntity.getStatusCode() != HttpStatus.OK){
             return gson.toJson( new ErrorObject(resEntity.getStatusCodeValue()));
         }
 
