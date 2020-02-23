@@ -3,125 +3,85 @@ package controllers;
 import com.google.gson.*;
 import models.*;
 
+
 /**
- * This mess of a class handles the logic behind pseudo-channels.
- *
- * @Author Oscar Strandmark
+ * Controller class for Pseudochannels, handles the logic by incoming message
+ * of audio feature preference, returns a suggested channel to listen to based
+ * on whats currently playing on the Radio channels.
  */
 public class PseudoChannelController {
+    private SRController srController;
+    AudioFeaturesController audioFeaturesController;
+    SpotifySearchController searchController;
+    JsonParser parser;
+    Gson gson;
 
-    //Everything in this method is repeated twice, as it is done for both radio channels.
-    public PseudoChannelSelectionResponse getChannel(String json){
-        //Convert json to java object.
-        Gson gson = new Gson();
-        PseudoChannelSelection selection = gson.fromJson(json, PseudoChannelSelection.class);
-
-        SRController srController = new SRController();
-
-        //Get songs currently playing on radio channels
-        PlayingSong playingP2 = srController.getSongPlaying(new SRMessage(163));
-        PlayingSong playingP3 = srController.getSongPlaying(new SRMessage(164));
-
-        //If at least one station is playing music
-        if(playingP2.getPlayingSongName() != null || playingP3.getPlayingSongName() != null){
-            SpotifySearchController searchController = new SpotifySearchController();
-
-            //Search the spotify catalog for the songs.
-            Search searchP2 = new Search(selection.getAuth(), "track", playingP2.getPlayingSongName());
-            Search searchP3 = new Search(selection.getAuth(), "track", playingP3.getPlayingSongName());
-
-            JsonParser parser = new JsonParser();
-
-            boolean successP2 = true;
-            boolean successP3 = true;
-            String songIdP2 = null;
-            String songIdP3 = null;
-
-            //If they exist in the spotify catalog, get their trackID.
-            try { //try to get p2
-                String searchResultP2 = searchController.search(gson.toJson(searchP2));
-                JsonObject trackMapP2 = parser.parse(searchResultP2).getAsJsonObject().get("tracks").getAsJsonObject().get("items").getAsJsonArray().get(0).getAsJsonObject(); //gets the one and only track from the response as an json object
-                songIdP2 = trackMapP2.get("id").getAsString();
+    //channel name is not relevant, since we will only return the channelID
+    private int[] channels = {132, 163, 164, 213, 223, 205,
+            210, 212, 220, 200, 203, 201, 211, 214, 207, 209, 206, 208, 701,
+            202, 218, 204, 219, 215, 216, 217, 221, 222, 166, 2576, 2562, 4951, 5283};
 
 
-            } catch (Exception e){
-                successP2 = false;
-            }
+    public PseudoChannelSelectionResponse getChannel(PseudoChannelSelection selection){
+        srController = new SRController();
+        audioFeaturesController = new AudioFeaturesController();
+        searchController = new SpotifySearchController();
+        parser = new JsonParser();
+        gson = new Gson();
 
-            try { //Try to get p3
-                String searchResultP3 = searchController.search(gson.toJson(searchP3));
-                JsonObject trackMapP3 = parser.parse(searchResultP3).getAsJsonObject().get("tracks").getAsJsonObject().get("items").getAsJsonArray().get(0).getAsJsonObject(); //gets the one and only track from the response as an json object
-                songIdP3 = trackMapP3.get("id").getAsString();
-            } catch (Exception e){
-                successP3 = false;
-            }
+        int choosenChannelID = -1; //channel with highest value
+        double choosenChannelValue = -1; //value of the channel with highest value of prefered audiofeature
 
-            PseudoChannelSelectionResponse response = null;
-
-            //If only one station plays music that is able to be found on spotify, play that one.
-            if(successP2 && !successP3){
-                response = new PseudoChannelSelectionResponse("P2");
-            }
-
-            if(!successP2 && successP3){
-                response = new PseudoChannelSelectionResponse("P3");
-            }
-
-            //If both stations are playing music found in the spotify catalog.
-            if(successP2 && successP3){
-
-                AudioFeaturesController audioFeaturesController = new AudioFeaturesController();
-
-                AudioFeatures featuresP2 = audioFeaturesController.getAudioFeatures(new TrackMessage(selection.getAuth(),songIdP2));
-                AudioFeatures featuresP3 = audioFeaturesController.getAudioFeatures(new TrackMessage(selection.getAuth(),songIdP3));
-
-                double valP2 = 0;
-                double valP3 = 0;
-
-                //Evalueta their values based on the spotify track analysis.
-                switch (selection.getType().toLowerCase()) {
-                    case "dance":
-                        valP2 = Double.parseDouble(featuresP2.getDanceability());
-                        valP3 = Double.parseDouble(featuresP3.getDanceability());
-                        break;
-                    case "hi_energy":
-                        valP2 = Double.parseDouble(featuresP2.getEnergy());
-                        valP3 = Double.parseDouble(featuresP3.getEnergy());
-                        break;
-                    case "lo_energy":
-                        //swap variables since we want to compare the opposite
-                        valP3 = Double.parseDouble(featuresP2.getEnergy());
-                        valP2 = Double.parseDouble(featuresP3.getEnergy());
-                        break;
-                    case "instrumental":
-                        valP2 = Double.parseDouble(featuresP2.getInstrumentalness());
-                        valP3 = Double.parseDouble(featuresP3.getInstrumentalness());
-                        break;
-                    case "hi_tempo":
-                        valP2 = Double.parseDouble(featuresP2.getTempo());
-                        valP3 = Double.parseDouble(featuresP3.getTempo());
-                        break;
-                    case "lo_tempo":
-                        valP3 = Double.parseDouble(featuresP2.getTempo());
-                        valP2 = Double.parseDouble(featuresP3.getTempo());
-                        break;
+        for(int i = 0; i < channels.length; i++){
+            if(choosenChannelID < 0){ //for initial comparision
+                choosenChannelID = channels[i];
+                try {
+                    PlayingSong song = srController.getSongPlaying(new SRMessage(channels[i])); //song from SR
+                    String searchResult = searchController.search(gson.toJson(new Search(selection.getAuth(), "track", song.getPlayingSongName()))); //try to get song from spotify
+                    JsonObject trackMap = parser.parse(searchResult).getAsJsonObject().get("tracks").getAsJsonObject().get("items").getAsJsonArray().get(0).getAsJsonObject(); //gets the one and only track from the response as an json object
+                    String songId = trackMap.get("id").getAsString();
+                    AudioFeatures features = audioFeaturesController.getAudioFeatures(new TrackMessage(selection.getAuth(), songId)); //get audiofeature from Spotify
+                    switch (selection.getType().toLowerCase()) {
+                        //OBS FIXA LOGIKEN MELLAN HIGH OCH LOW ENERGY, JUST NU MÄTS BARA HÖGSTA ENERGIN OAVSETT OM MAN ÖNSKAR HI ELLER LO, SAMMA MED TEMPO
+                        case "dance": choosenChannelValue = Double.parseDouble(features.getDanceability()); break;
+                        case "hi_energy": choosenChannelValue = Double.parseDouble(features.getEnergy()); break;
+                        case "lo_energy": choosenChannelValue = Double.parseDouble(features.getEnergy()); break; //FIXME
+                        case "instrumental": choosenChannelValue = Double.parseDouble(features.getInstrumentalness()); break;
+                        case "hi_tempo": choosenChannelValue = Double.parseDouble(features.getTempo()); break;
+                        case "lo_tempo": choosenChannelValue = Double.parseDouble(features.getTempo()); break;  //FIXME
+                    }
+                } catch (Exception e){
+                    choosenChannelValue = 0;
                 }
-                String result;
-
-                //If value of p2 is higher than p3, play p2. This is why we swap the values for the low_value channels.
-                if (valP2 > valP3) {
-                    result = "P2";
-                } else {
-                    result = "P3";
+            }else{
+                try {
+                    double tempValue = 0;
+                    PlayingSong song = srController.getSongPlaying(new SRMessage(channels[i])); //song from SR
+                    String searchResult = searchController.search(gson.toJson(new Search(selection.getAuth(), "track", song.getPlayingSongName()))); //try to get song from spotify
+                    JsonObject trackMap = parser.parse(searchResult).getAsJsonObject().get("tracks").getAsJsonObject().get("items").getAsJsonArray().get(0).getAsJsonObject(); //gets the one and only track from the response as an json object
+                    String songId = trackMap.get("id").getAsString();
+                    AudioFeatures features = audioFeaturesController.getAudioFeatures(new TrackMessage(selection.getAuth(), songId)); //get audiofeature from Spotify
+                    switch (selection.getType().toLowerCase()) {
+                        //OBS FIXA LOGIKEN MELLAN HIGH OCH LOW ENERGY, JUST NU MÄTS BARA HÖGSTA ENERGIN OAVSETT OM MAN ÖNSKAR HI ELLER LO, SAMMA MED TEMPO
+                        case "dance": tempValue = Double.parseDouble(features.getDanceability()); break;
+                        case "hi_energy": tempValue = Double.parseDouble(features.getEnergy()); break;
+                        case "lo_energy": tempValue = Double.parseDouble(features.getEnergy()); break; //FIXME
+                        case "instrumental": tempValue = Double.parseDouble(features.getInstrumentalness()); break;
+                        case "hi_tempo": tempValue = Double.parseDouble(features.getTempo()); break;
+                        case "lo_tempo": tempValue = Double.parseDouble(features.getTempo()); break;  //FIXME
+                    }
+                    if(tempValue > choosenChannelValue){
+                        System.out.println("new channel with better feature-mathcing was found: \t old = "+choosenChannelValue+"  new = "+tempValue);
+                        choosenChannelValue = tempValue;
+                        choosenChannelID = channels[i];
+                    }
+                } catch (Exception e){
+                   //Do nothing I guess
                 }
-                System.out.println(result);
-                response = new PseudoChannelSelectionResponse(result);
             }
-            return response;
         }
-        //If there was an error, or both songs are not playing music: return -1
-        System.out.println(-1);
-        return new PseudoChannelSelectionResponse("-1");
+        return new PseudoChannelSelectionResponse(choosenChannelID+"");
     }
+
 }
 
