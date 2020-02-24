@@ -138,8 +138,8 @@ function savetrackID(songName, artistName) {
                 archiveSong(songName,artistName,trackID);
             } 
         },
-        error: function(error) {
-            console.log('Error: ' + error.Message);
+        error: function(request, status, error) {
+            console.log('Search: ' + status);
         }
     });	
 }
@@ -162,7 +162,7 @@ function getRecommendation() {
             $('#recommendedSong').html(recommendedName + ' - ' + recommendedArtist);
         },
         error:function(request, status, error){
-            console.log(error.Message);
+            console.log("Recommendation: " + status);
         }
     });
 }
@@ -194,7 +194,7 @@ function updateSongInfo() {
             $('#nowPlaying').html(nowPlaying);
         },
         error:function(request, status, error){
-            console.log(error.Message)
+            console.log("Currently: " + status)
         }
     });
 }
@@ -285,7 +285,7 @@ function addToPlaylist(trackID, playlistID) {
             alert('Song added to playlist');
         },
         error:function(request, status, error){
-            console.log(error.Message);
+            console.log("Add Song: " + status);
         }
     });
 }
@@ -333,10 +333,17 @@ function getPlaylists(data){
             response = result;
         },
         error: function(request, status, error){
-            console.log(error.Message);
+            console.log("Fetch: " + status);
         }
     })
     return response;
+}
+
+function getChannelName(channelID) {
+    var channelName = $.get('/channelName?' + channelID)
+        .done(function() {
+            return channelName.responseText;
+        })
 }
 
 //Changes the radio channel depending on the pseudo channel
@@ -351,9 +358,9 @@ function pseudoChannel(type) {
         }), 
         success: function(result){
             result = JSON.parse(result);
-            radio(result["channel"]);
+            radio(getChannelName(result["channel"]), result['channel']);
         }, error: function(request, status, error){
-            console.log(error.Message);
+            console.log("Pseudo channel: " + status);
         }
 
     })
