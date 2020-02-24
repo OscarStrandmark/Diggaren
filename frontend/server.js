@@ -5,6 +5,7 @@ var querystring = require('querystring');
 var cookieParser = require('cookie-parser');
 var httpRequest = require('xmlhttprequest').XMLHttpRequest;
 var bodyParser = require('body-parser');
+var fs = require('fs');
 
 var client_id = 'e9f8cccef4a84a71b2a925f5455fa84c'; // Your client id
 var client_secret = 'ed8e7c22f630455bbdcb3fdd46027456'; // Your secret
@@ -57,13 +58,17 @@ app.post('/fetch', function(req, res) {
     }));
 });
 
+app.get('/channels', function(req, res) {
+  let rawdata = fs.readFileSync('channels.json');
+  let json = JSON.parse(rawdata);
+  res.send(JSON.stringify(json));
+})
+
 app.post('/recommendation', function(req, res) {
-    console.log(req.body.auth);
   var http_request;
   http_request = new httpRequest();
   http_request.onreadystatechange = function () {
     if(http_request.readyState==4 && http_request.status==200) {
-        console.log(http_request);
       res.set('Content-Type', 'application/json');
       res.send(JSON.stringify(http_request.responseText))
     }
