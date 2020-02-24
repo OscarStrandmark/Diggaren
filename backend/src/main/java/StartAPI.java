@@ -2,6 +2,8 @@ import com.google.gson.Gson;
 import controllers.*;
 import models.SRMessage;
 import models.TrackMessage;
+import netscape.javascript.JSObject;
+import org.codehaus.jackson.map.util.JSONPObject;
 import util.CorsFilter;
 
 import static spark.Spark.*;
@@ -33,23 +35,65 @@ public class StartAPI {
             //Search through the spotify-API
             post("/search", (request,response) -> {
                 response.type("application/json"); //definiera svar som json
-                return spotifySearchController.search(request.body());
+                String responseBody = spotifySearchController.search(request.body());
+                if(responseBody.contains("statusCode")){
+                    int statusCode = Integer.parseInt(responseBody.split(":")[1].substring(0,4));
+                    response.status(statusCode);
+                } else {
+                    response.status(200);
+                }
+                return responseBody;
             });
             //Add a track to your spotify library
-            post("/AddToLibrary", (request,response) -> addToLibraryController.addToLibrary(request.body()));
+            post("/AddToLibrary", (request,response) -> {
+                response.type("application/json"); //definiera svar som json
+                String responseBody = addToLibraryController.addToLibrary(request.body());
+                if(responseBody.contains("statusCode")){
+                    int statusCode = Integer.parseInt(responseBody.split(":")[1].substring(0,4));
+                    response.status(statusCode);
+                } else {
+                    response.status(200);
+                }
+                return responseBody;
+            });
             //Endpoints concerning playlists
             path("/playlist", () -> {
                 //Get a list of the users spotify playlists.
                 post("/fetch", (request,response) -> {
                     response.type("application/json"); //definiera svar som json
-                    return spotifyGetPlaylist.getPlayList(request.body());
+                    String responseBody = spotifyGetPlaylist.getPlayList(request.body());
+                    if(responseBody.contains("statusCode")){
+                        int statusCode = Integer.parseInt(responseBody.split(":")[1].substring(0,4));
+                        response.status(statusCode);
+                    } else {
+                        response.status(200);
+                    }
+                    return responseBody;
                 });
                 //Add a song to a playlist
-                post("/add", (request,response) -> spotifyAddToPlaylistController.addToPlayList(request.body()));
+                post("/add", (request,response) -> {
+                    response.type("application/json"); //definiera svar som json
+                    String responseBody = spotifyAddToPlaylistController.addToPlayList(request.body());
+                    if(responseBody.contains("statusCode")){
+                        int statusCode = Integer.parseInt(responseBody.split(":")[1].substring(0,4));
+                        response.status(statusCode);
+                    } else {
+                        response.status(200);
+                    }
+                    return responseBody;
+                });
             });
             //Get album, already converted to JSON
             post("/album", (request, response) -> {
-                return getAlbumController.getAlbum(request.body());
+                response.type("application/json"); //definiera svar som json
+                String responseBody = getAlbumController.getAlbum(request.body());
+                if(responseBody.contains("statusCode")){
+                    int statusCode = Integer.parseInt(responseBody.split(":")[1].substring(0,4));
+                    response.status(statusCode);
+                } else {
+                    response.status(200);
+                }
+                return responseBody;
             });
           
             //MARK: Recommendations
@@ -59,14 +103,28 @@ public class StartAPI {
                 TrackMessage msg = gson.fromJson(request.body(), TrackMessage.class); //hämta json object från body som ett definierat objekt
                 System.out.println("auth: " + msg.getAuth());
                 System.out.println("trackID " + msg.getTrackID());
-                return recommendationsController.getRecommendation(msg);
+                String responseBody = recommendationsController.getRecommendation(msg);
+                if(responseBody.contains("statusCode")){
+                    int statusCode = Integer.parseInt(responseBody.split(":")[1].substring(0,4));
+                    response.status(statusCode);
+                } else {
+                    response.status(200);
+                }
+                return responseBody;
             });
 
             //MARK: AudioFeatures
             post("/audioFeatures", (request, response) -> {
                 response.type("application/json"); //definiera svar som json
                 TrackMessage msg = gson.fromJson(request.body(), TrackMessage.class); //hämta json object från body som ett definierat objekt
-                return audioFeaturesController.getAudioFeatures(msg);
+                String responseBody = audioFeaturesController.getAudioFeatures(msg);
+                if(responseBody.contains("statusCode")){
+                    int statusCode = Integer.parseInt(responseBody.split(":")[1].substring(0,4));
+                    response.status(statusCode);
+                } else {
+                    response.status(200);
+                }
+                return responseBody;
             });
         });
 
@@ -75,7 +133,14 @@ public class StartAPI {
             post("/currentlyPlaying", (request, response) -> {
                 response.type("application/json"); //definiera svar som json
                 SRMessage msg = gson.fromJson(request.body(), SRMessage.class); //hämta json object från body som ett definierat objekt
-                return srController.getSongPlaying(msg);
+                String responseBody = srController.getSongPlaying(msg);
+                if(responseBody.contains("statusCode")){
+                    int statusCode = Integer.parseInt(responseBody.split(":")[1].substring(0,4));
+                    response.status(statusCode);
+                } else {
+                    response.status(200);
+                }
+                return responseBody;
             });
         });
 
