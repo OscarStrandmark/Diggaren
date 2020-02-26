@@ -52,6 +52,7 @@ app.post('/fetch', function(req, res) {
         if(http_request.status!=0) {
           res.status(http_request.status);
         } else {
+          console.log(status);
           res.status(500);
         }
         res.send();
@@ -143,7 +144,7 @@ app.post('/addSong', function(req, res) {
         res.send();
       }
     };
-    http_request.open("POST", "http://localhost:5050/spotify/search");
+    http_request.open("POST", "http://localhost:5050/spotify/playlist/add");
     http_request.withCredentials = true;
     http_request.setRequestHeader("Content-Type", "application/json");
     http_request.send(JSON.stringify({

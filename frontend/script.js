@@ -1,11 +1,11 @@
 var apiUrl = 'http://localhost:5050';
 setCookie('channelID',-1);
 
-var previousSongs = {};
+// var previousSongs = {};
 var index = 0;
 var timeout;
 
-previousSongs["songName"] = 'songID';
+// previousSongs["songName"] = 'songID';
 
 /* Toggle between showing and hiding the navigation menu links when the user clicks on the hamburger menu / bar icon */
 function myFunction() {
@@ -54,24 +54,9 @@ function radio(channel, channelID) {
     console.log('clicked channel');
     setCookie('channelID', channelID);
     updateSongInfo();
+    getRecommendation();
     $('.nowPlayingChannel').html('Spelas just nu på ' + channel + ':');
     console.log(getCookie('channelID'));
-
-    // if(station == "P2") {
-
-    //     document.cookie = 'channelID=163';
-
-    //     $('#p3').toggleClass('selected');
-    //     $('#p2').toggleClass('selected');
-    //     updateSongInfo();
-    // } else if(station == "P3") {
-
-    //     document.cookie = 'channelID=164';
-
-    //     $('#p3').toggleClass('selected');
-    //     $('#p2').toggleClass('selected');
-    //     updateSongInfo();
-    // }
 }
 
 // Returns the cookie with the given identifier in the parameter
@@ -130,12 +115,12 @@ function savetrackID(songName, artistName) {
         data: JSON.stringify(data),
         success: function(result) {
             var json = JSON.parse(result);
-            if(typeof json.tracks.items[0].id == 'undefined'){
-                alert("shit is fucked");
+            if(!json.tracks.items[0].id){
+                setCookie('trackID', -1);
             } else {
                 var trackID = json.tracks.items[0].id;
                 setCookie('trackID', trackID);
-                archiveSong(songName,artistName,trackID);
+                // archiveSong(songName,artistName,trackID);
             } 
         },
         error: function(request, status, error) {
@@ -146,6 +131,7 @@ function savetrackID(songName, artistName) {
 
 function getRecommendation() {
     // Request is sent to fetch recommendations based on the currently playing song
+    console.log("Recommendation running on: " + getCookie('trackID'));
     $.ajax({
         url: '/recommendation',
         type: 'POST',
@@ -158,7 +144,7 @@ function getRecommendation() {
             result = JSON.parse(result);
             var recommendedName = result['trackName'];
             var recommendedArtist = result['artistName'];
-            console.log(result);
+            console.log("Recommendation works");
             $('#recommendedSong').html(recommendedName + ' - ' + recommendedArtist);
         },
         error:function(request, status, error){
@@ -188,10 +174,13 @@ function updateSongInfo() {
                 var startTime = startTime.getMilliseconds() - new Date().getMilliseconds;
                 nowPlaying = songName + ' - ' + artistName;
                 savetrackID(songName, artistName);
-                window.clearTimeout(timeout);
-                timeout = window.setTimeout(archiveSong(),startTime);
+                // window.clearTimeout(timeout);
+                // timeout = window.setTimeout(archiveSong(),startTime);
+
+                // updatePrevious();
             } 
             $('#nowPlaying').html(nowPlaying);
+            
         },
         error:function(request, status, error){
             console.log("Currently: " + status)
@@ -199,43 +188,42 @@ function updateSongInfo() {
     });
 }
 
-function archiveSong(songName,artistName,trackID){
-    var stringToShow = songName + ' - ' + artistName;
-    previousSongs[stringToShow] = trackID;
-}
+// function archiveSong(songName,artistName,trackID){
+//     var stringToShow = songName + ' - ' + artistName;
+//     previousSongs[stringToShow] = trackID;
+// }
 
-$(document).ready(function(){
-    var playlists = getPlaylists(getCookie('accessToken'));
-    var i = 0;
-    if(!playlists) {
-        console.log("Not connected to the API");
-    } else {
-            for(var key in previousSongs){
-                var dropdown = "<div class='dropdown'><button class='dropbtn' onclick='toggleDropdown()'>Lägg till låt</button><div id='myDropdown$(i)' class='dropdown-content'>";
-                i++;
-                for(var song in playlists.items) {
-                    btn = $('<div />', {
-                        class: "spellista",
-                        text : playlists.items[song].name,
-                        type  : 'div',
-                        value : playlists.items[song].id,
-                        on    : {
-                            click: function() {
-                                addToPlaylist(getCookie('trackID'), this.value);
-                            }
-                        }
-                    });
-                    $('.dropdown-content').append(btn);
-                }
-                
-                dropdown += '</div></div>';
-                $('#previousSong').append(dropdown);
-            }
 
-    }
 
-    addChannelButtons();
-});
+// function updatePrevious(playlists) {
+//     var i = 0;
+//     if(!playlists) {
+//         console.log('Could not fetch playlists');
+//     } else {
+//         for(var key in previousSongs){
+//             var dropdown = "<div class='dropdown'><button class='dropbtn' onclick='toggleDropdown()'>Lägg till låt</button><div id='myDropdown$(i)' class='dropdown-content'>";
+//             i++;
+            
+//             dropdown += '</div></div>';
+//             $('#previousSong').append(dropdown);
+//                     for(var playlist in playlists) {
+//                         btn = $('<div />', {
+//                             class: "spellista",
+//                             text : playlists.items[song].name,
+//                             type  : 'div',
+//                             value : playlists.items[song].id,
+//                             on    : {
+//                                 click: function() {
+//                                     addToPlaylist(getCookie('trackID'), this.value);
+//                                 }
+//                             }
+//                         });
+//                         $('.dropdown-content').append(btn);
+//                     }
+//         }
+
+//     }
+// }
 
 function addChannelButtons() {
     
@@ -293,31 +281,7 @@ function addToPlaylist(trackID, playlistID) {
 
 
 // When website is loaded, run function to create dropdown menu with playlists
-$(document).ready(function(){
-    var access_token = getCookie("accessToken");
 
-    var result = getPlaylists(access_token);
-    if(!result) {
-        console.log('error when fetching playlists');
-    } else {
-        //  on success loops through playlists and creates a button for each of them in the dropdown menu
-        // result = JSON.parse(result);
-        for(var key in result.items) {
-            btn = $('<div />', {
-                class: "spellista",
-                text : result.items[key].name,
-                type  : 'div',
-                value : result.items[key].id,
-                on    : {
-                    click: function() {
-                        addToPlaylist(getCookie('trackID'), result.items[key].id);
-                    }
-                }
-            });
-            $('.dropdown-content').append(btn);
-        }  
-    }
-});
 
 function getPlaylists(data){
     var response = null;
@@ -328,15 +292,32 @@ function getPlaylists(data){
             'auth': data
         }),
         contentType: 'application/json',
-        success: function(result) {
-            console.log("works");
-            response = result;
+        success: function(response) {
+            let result = JSON.parse(response);
+            console.log("Fetch works: " + result);
+            for(var key in result.items) {
+                console.log('adding playlist');
+                btn = $('<div />', {
+                    class: "spellista",
+                    text : result.items[key].name,
+                    type  : 'div',
+                    value : result.items[key].id,
+                    on    : {
+                        click: function() {
+                            addToPlaylist(getCookie('trackID'), result.items[key].id);
+                        }
+                    }
+                });
+                $('.playlists').append(btn);
+            }
+            // updatePrevious(result.items);
+            return result;
         },
         error: function(request, status, error){
             console.log("Fetch: " + status);
+            return null;
         }
     })
-    return response;
 }
 
 function getChannelName(channelID) {
@@ -365,3 +346,12 @@ function pseudoChannel(type) {
 
     })
 }
+
+
+
+$(document).ready(function(){
+    addChannelButtons();
+    var access_token = getCookie("accessToken");
+    getPlaylists(access_token);
+    
+});

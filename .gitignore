@@ -2,3 +2,4 @@
 frontend/node_modules
 .idea/Diggaren.iml
 .idea/misc.xml
+backend/target
