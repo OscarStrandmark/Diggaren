@@ -5,6 +5,7 @@ var querystring = require('querystring');
 var cookieParser = require('cookie-parser');
 var httpRequest = require('xmlhttprequest').XMLHttpRequest;
 var bodyParser = require('body-parser');
+var fs = require('fs');
 
 var client_id = 'e9f8cccef4a84a71b2a925f5455fa84c'; // Your client id
 var client_secret = 'ed8e7c22f630455bbdcb3fdd46027456'; // Your secret
@@ -47,6 +48,13 @@ app.post('/fetch', function(req, res) {
       if(http_request.readyState==4 && http_request.status==200) {
         res.set('Content-Type', 'application/json');
         res.send(JSON.stringify(http_request.responseText))
+      } else if(http_request.readyState==4 && http_request.status!=200) {
+        if(http_request.status!=0) {
+          res.status(http_request.status);
+        } else {
+          res.status(500);
+        }
+        res.send();
       }
     };
     http_request.open("POST", "http://localhost:5050/spotify/playlist/fetch");
@@ -57,15 +65,33 @@ app.post('/fetch', function(req, res) {
     }));
 });
 
+app.get('/channels', function(req, res) {
+  let rawdata = fs.readFileSync('channels.json');
+  let json = JSON.parse(rawdata);
+  res.send(JSON.stringify(json));
+})
+
+app.get('/channelName', function(req, res) {
+  let rawdata = fs.readFileSync('channels.json');
+  let json = JSON.parse(rawdata);
+  let channelName = req.query.channelID;
+  res.send(json[channelName]);
+})
+
 app.post('/recommendation', function(req, res) {
-    console.log(req.body.auth);
   var http_request;
   http_request = new httpRequest();
   http_request.onreadystatechange = function () {
     if(http_request.readyState==4 && http_request.status==200) {
-        console.log(http_request);
       res.set('Content-Type', 'application/json');
       res.send(JSON.stringify(http_request.responseText))
+    }else if(http_request.readyState==4 && http_request.status!=200) {
+      if(http_request.status!=0) {
+        res.status(http_request.status);
+      } else {
+        res.status(500);
+      }
+      res.send();
     }
   };
   http_request.open("POST", "http://localhost:5050/spotify/recommendation");
@@ -84,6 +110,13 @@ app.post('/currently', function(req, res) {
       if(http_request.readyState==4 && http_request.status==200) {
         res.set('Content-Type', 'application/json');
         res.send(JSON.stringify(http_request.responseText));
+      }else if(http_request.readyState==4 && http_request.status!=200) {
+        if(http_request.status!=0) {
+          res.status(http_request.status);
+        } else {
+          res.status(500);
+        }
+        res.send();
       }
     };
     http_request.open("POST", "http://localhost:5050/SR/currentlyPlaying");
@@ -101,6 +134,13 @@ app.post('/addSong', function(req, res) {
       if(http_request.readyState==4 && http_request.status==200) {
         res.set('Content-Type', 'application/json');
         res.send(JSON.stringify(http_request.responseText));
+      }else if(http_request.readyState==4 && http_request.status!=200) {
+        if(http_request.status!=0) {
+          res.status(http_request.status);
+        } else {
+          res.status(500);
+        }
+        res.send();
       }
     };
     http_request.open("POST", "http://localhost:5050/spotify/search");
@@ -120,6 +160,13 @@ app.post('/search', function(req, res) {
       if(http_request.readyState==4 && http_request.status==200) {
         res.set('Content-Type', 'application/json');
         res.send(JSON.stringify(http_request.responseText));
+      }else if(http_request.readyState==4 && http_request.status!=200) {
+        if(http_request.status!=0) {
+          res.status(http_request.status);
+        } else {
+          res.status(500);
+        }
+        res.send();
       }
     };
     http_request.open("POST", "http://localhost:5050/spotify/search");
@@ -139,6 +186,13 @@ app.post('/pseudoChannel', function(req, res) {
       if(http_request.readyState==4 && http_request.status==200) {
         res.set('Content-Type', 'application/json');
         res.send(JSON.stringify(http_request.responseText));
+      }else if(http_request.readyState==4 && http_request.status!=200) {
+        if(http_request.status!=0) {
+          res.status(http_request.status);
+        } else {
+          res.status(500);
+        }
+        res.send();
       }
     };
     http_request.open("POST", "http://localhost:5050/pseudoChannel");

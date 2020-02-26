@@ -2,6 +2,24 @@
   background-color: rgb(174, 171, 171);
 }
 
+.drop-down{
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  padding: 12px 16px;
+  z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
 .title{
   color: white;
   text-align: center;
@@ -89,7 +107,7 @@ width: 100%;
 .dropdown-content {
   display: none;
   position: absolute;
-  background-color: #f1f1f1;
+  background-color: #81dafd;
   min-width: 160px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
@@ -170,6 +188,11 @@ width: 100%;
 }
 
 .channels:hover {
+  background-color: rgb(59, 59, 59);
+  cursor:pointer;
+}
+
+.pseudochannel:hover {
   background-color: rgb(59, 59, 59);
   cursor:pointer;
 }

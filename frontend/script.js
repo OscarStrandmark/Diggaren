@@ -50,22 +50,28 @@ for (i = 0; i < coll.length; i++) {
     });
 }
 
-function radio(station) {
-    if(station == "P2") {
+function radio(channel, channelID) {
+    console.log('clicked channel');
+    setCookie('channelID', channelID);
+    updateSongInfo();
+    $('.nowPlayingChannel').html('Spelas just nu på ' + channel + ':');
+    console.log(getCookie('channelID'));
 
-        document.cookie = 'channelID=163';
+    // if(station == "P2") {
 
-        $('#p3').toggleClass('selected');
-        $('#p2').toggleClass('selected');
-        updateSongInfo();
-    } else if(station == "P3") {
+    //     document.cookie = 'channelID=163';
 
-        document.cookie = 'channelID=164';
+    //     $('#p3').toggleClass('selected');
+    //     $('#p2').toggleClass('selected');
+    //     updateSongInfo();
+    // } else if(station == "P3") {
 
-        $('#p3').toggleClass('selected');
-        $('#p2').toggleClass('selected');
-        updateSongInfo();
-    }
+    //     document.cookie = 'channelID=164';
+
+    //     $('#p3').toggleClass('selected');
+    //     $('#p2').toggleClass('selected');
+    //     updateSongInfo();
+    // }
 }
 
 // Returns the cookie with the given identifier in the parameter
@@ -117,7 +123,6 @@ function savetrackID(songName, artistName) {
     data.auth = getCookie('accessToken');
     data.type = 'track';
     data.query = songName + " " + artistName;
-    console.log(data.query);
     $.ajax({
         url: '/search',
         type: 'POST',
@@ -133,8 +138,8 @@ function savetrackID(songName, artistName) {
                 archiveSong(songName,artistName,trackID);
             } 
         },
-        error: function(error) {
-            console.log('Error: ' + error.Message);
+        error: function(request, status, error) {
+            console.log('Search: ' + status);
         }
     });	
 }
@@ -157,7 +162,7 @@ function getRecommendation() {
             $('#recommendedSong').html(recommendedName + ' - ' + recommendedArtist);
         },
         error:function(request, status, error){
-            console.log(request.statusText)
+            console.log("Recommendation: " + status);
         }
     });
 }
@@ -189,7 +194,7 @@ function updateSongInfo() {
             $('#nowPlaying').html(nowPlaying);
         },
         error:function(request, status, error){
-            console.log(request.statusText)
+            console.log("Currently: " + status)
         }
     });
 }
@@ -202,29 +207,68 @@ function archiveSong(songName,artistName,trackID){
 $(document).ready(function(){
     var playlists = getPlaylists(getCookie('accessToken'));
     var i = 0;
-    for(var key in previousSongs){
-        var dropdown = "<div class='dropdown'><button class='dropbtn' onclick='toggleDropdown()'>Lägg till låt</button><div id='myDropdown$(i)' class='dropdown-content'>";
-        i++;
-        for(var song in playlists.items) {
-            btn = $('<div />', {
-                class: "spellista",
-                text : playlists.items[song].name,
-                type  : 'div',
-                value : playlists.items[song].id,
-                on    : {
-                    click: function() {
-                        addToPlaylist(getCookie('trackID'), result.items[key].id);
+    if(!playlists) {
+        console.log("Not connected to the API");
+    } else {
+            for(var key in previousSongs){
+                var dropdown = "<div class='dropdown'><button class='dropbtn' onclick='toggleDropdown()'>Lägg till låt</button><div id='myDropdown$(i)' class='dropdown-content'>";
+                i++;
+                for(var song in playlists.items) {
+                    btn = $('<div />', {
+                        class: "spellista",
+                        text : playlists.items[song].name,
+                        type  : 'div',
+                        value : playlists.items[song].id,
+                        on    : {
+                            click: function() {
+                                addToPlaylist(getCookie('trackID'), this.value);
+                            }
+                        }
+                    });
+                    $('.dropdown-content').append(btn);
+                }
+                
+                dropdown += '</div></div>';
+                $('#previousSong').append(dropdown);
+            }
+
+    }
+
+    addChannelButtons();
+});
+
+function addChannelButtons() {
+    
+
+    var getChannels = $.get('/channels', function() {
+            console.log('channels success');
+        })
+            .done(function() {
+                var channels = JSON.parse(getChannels.responseText);
+                for(var channel in channels) {
+                    if(channels.hasOwnProperty(channel)) {
+                        let button = $('<div />', {
+                            class: "channels",
+                            text: channel,
+                            value: channels[channel],
+                            on: {
+                                click: function() {
+                                    radio(this.textContent, this.getAttribute('value'));
+                                }
+                            }
+                        });
+                        $('.channel-content').append(button);
                     }
                 }
+
+            })
+            .fail(function() {
+                console.log('channels failed');
+            })
+            .always(function() {
+                console.log('channels finished');
             });
-            $('.dropdown-content').append(btn);
-            console.log(result.items[key].name);
-        }
-        
-        dropdown += '</div></div>';
-        $('#previousSong').append(dropdown);
-    } 
-});
+}
 
 // Adds the given song to the given playlist on Spotify
 function addToPlaylist(trackID, playlistID) {
@@ -241,7 +285,7 @@ function addToPlaylist(trackID, playlistID) {
             alert('Song added to playlist');
         },
         error:function(request, status, error){
-            console.log(request.statusText);
+            console.log("Add Song: " + status);
         }
     });
 }
@@ -254,6 +298,8 @@ $(document).ready(function(){
 
     var result = getPlaylists(access_token);
     if(!result) {
+        console.log('error when fetching playlists');
+    } else {
         //  on success loops through playlists and creates a button for each of them in the dropdown menu
         // result = JSON.parse(result);
         for(var key in result.items) {
@@ -269,15 +315,11 @@ $(document).ready(function(){
                 }
             });
             $('.dropdown-content').append(btn);
-            console.log(result.items[key].name);
         }  
-    } else {
-        console.log('error');
     }
 });
 
 function getPlaylists(data){
-    console.log(data);
     var response = null;
     $.ajax({
         type:"POST",
@@ -287,14 +329,21 @@ function getPlaylists(data){
         }),
         contentType: 'application/json',
         success: function(result) {
-            console.log§("works");
+            console.log("works");
             response = result;
         },
         error: function(request, status, error){
-            console.log(request.status);
+            console.log("Fetch: " + status);
         }
     })
     return response;
+}
+
+function getChannelName(channelID) {
+    var channelName = $.get('/channelName?' + channelID)
+        .done(function() {
+            return channelName.responseText;
+        })
 }
 
 //Changes the radio channel depending on the pseudo channel
@@ -309,10 +358,9 @@ function pseudoChannel(type) {
         }), 
         success: function(result){
             result = JSON.parse(result);
-            radio(result["channel"]);
-            console.log(result["channel"]);
+            radio(getChannelName(result["channel"]), result['channel']);
         }, error: function(request, status, error){
-            console.log(request);
+            console.log("Pseudo channel: " + status);
         }
 
     })

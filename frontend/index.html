@@ -18,29 +18,34 @@
     
         <div class="topnav">
             <div id="myLinks">
-				<div id='p2' class="inline channels" onclick="radio('P2')">P2</div>
-				<div id='p3' class="inline channels selected" onclick="radio('P3')">P3</div>
-				<div class="inline channels">
-					<button type="button" class="pcollapsible">
+                <!-- <div id='p2' class="inline channels" onclick="radio('P2')">Kanaler</div> -->
+                        <div class="dropdown">
+                          <button class="dropbtn">Kanaler</button>
+                          <div class="dropdown-content channel-content">
+                            
+                          </div>
+                        </div>
+				    <div class="dropdown">
+					<button type="button" class="dropbtn">
 						Pseudokanaler
 					</button>
-					<div class="pcontent">
-						<button class="pseudochannel" onclick="pseudoChannel('dance')">Dance</button>
-                        <button class="pseudochannel" onclick="pseudoChannel('instrumental')">Instrumental</button>
-                        <button class="pseudochannel" onclick="pseudoChannel('hi_energy')">High Energy</button>
-                        <button class="pseudochannel" onclick="pseudoChannel('lo_energy')">Low Energy</button>
-                        <button class="pseudochannel" onclick="pseudoChannel('hi_tempo')">High Tempo</button>
-                        <button class="pseudochannel" onclick="pseudoChannel('lo_tempo')">Low Tempo</button>
+					<div class="dropdown-content">
+						<div class="pseudochannel" onclick="pseudoChannel('dance')">Dance</div>
+                        <div class="pseudochannel" onclick="pseudoChannel('instrumental')">Instrumental</div>
+                        <div class="pseudochannel" onclick="pseudoChannel('hi_energy')">High Energy</div>
+                        <div class="pseudochannel" onclick="pseudoChannel('lo_energy')">Low Energy</div>
+                        <div class="pseudochannel" onclick="pseudoChannel('hi_tempo')">High Tempo</div>
+                        <div class="pseudochannel" onclick="pseudoChannel('lo_tempo')">Low Tempo</div>
 					</div>
             	</div>
             </div>
           </div>
         
-          <h1 class='title'>
+          <h1 class='title nowPlayingChannel'>
               Spelas just nu:
           </h1>
           <h2 class="title" id='nowPlaying'>
-              Ingenting! Välj en kanal först!
+              Ingenting, välj en kanal först!
           </h2>
           <center>
           <div class="dropdown">
@@ -57,7 +62,7 @@
                         Rekommenderad låt
                     </button>
                     <div class="content">
-                            <p id='recommendedSong'>Ingen låt spelas just nu</p>
+                            <p id='recommendedSong'>Ingen radiokanal är vald</p>
 
                     </div>
                 </li>
@@ -66,12 +71,12 @@
                         Föregående låtar
                     </button>
                     <div class="content">
-                        <p id='previousSong'>Föregående låtar:</p>
+                        <p id='previousSong'>Ingen radiokanal är vald</p>
                     </div>
                 </li>
                 <li class="flex-item">
                     <button type="button" class="refresh">
-                        <a href="/refresh">Uppdatera</a>
+                        <a href="/refresh">Refresh token</a>
 
                     </button>
                     <div class="content">
