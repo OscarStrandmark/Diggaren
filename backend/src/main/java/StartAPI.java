@@ -1,5 +1,6 @@
 import com.google.gson.Gson;
 import controllers.*;
+import models.PseudoChannelSelection;
 import models.SRMessage;
 import models.TrackMessage;
 import util.CorsFilter;
@@ -144,7 +145,8 @@ public class StartAPI {
 
         post("/pseudoChannel",((request, response) -> {
             response.type("application/json"); //definiera svar som json
-            return psuedoChannelController.getChannel(request.body());
+            PseudoChannelSelection selection = gson.fromJson(request.body(),PseudoChannelSelection.class);
+            return psuedoChannelController.getChannel(selection);
         }), gson :: toJson);
 
 

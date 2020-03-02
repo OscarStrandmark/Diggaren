@@ -25,6 +25,13 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
+  <component name="MavenImportPreferences">
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="importAutomatically" value="true" />
+      </MavenImportingSettings>
+    </option>
+  </component>
   <component name="ProjectId" id="1VCfXXDYAb2atjgIaTSRmdjR2HN" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="1" id="Add" />
@@ -44,19 +51,7 @@
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="restartRequiresConfirmation" value="false" />
-    <property name="settings.editor.selected.configurable" value="editor.preferences.folding" />
-  </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
+    <property name="settings.editor.selected.configurable" value="configurable.group.language" />
   </component>
   <component name="RunManager" selected="Application.StartAPI">
     <configuration name="SRController" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
@@ -122,6 +117,18 @@
       </list>
     </recent_temporary>
   </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -166,25 +173,25 @@
       <screen x="0" y="23" width="1280" height="777" />
     </state>
     <state x="0" y="23" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.23.1280.777@0.23.1280.777" timestamp="1578566420169" />
-    <state width="1238" height="205" key="GridCell.Tab.0.bottom" timestamp="1578575915908">
-      <screen x="0" y="23" width="1280" height="777" />
+    <state width="1878" height="300" key="GridCell.Tab.0.bottom" timestamp="1582490662256">
+      <screen x="0" y="23" width="1920" height="1057" />
     </state>
-    <state width="1878" height="301" key="GridCell.Tab.0.bottom/-1280.303.1280.777/0.23.1920.1057@0.23.1920.1057" timestamp="1578514957893" />
+    <state width="1878" height="300" key="GridCell.Tab.0.bottom/-1280.303.1280.777/0.23.1920.1057@0.23.1920.1057" timestamp="1582490662256" />
     <state width="1238" height="205" key="GridCell.Tab.0.bottom/0.23.1280.777@0.23.1280.777" timestamp="1578575915908" />
-    <state width="1238" height="205" key="GridCell.Tab.0.center" timestamp="1578575915906">
-      <screen x="0" y="23" width="1280" height="777" />
+    <state width="1878" height="300" key="GridCell.Tab.0.center" timestamp="1582490662255">
+      <screen x="0" y="23" width="1920" height="1057" />
     </state>
-    <state width="1878" height="301" key="GridCell.Tab.0.center/-1280.303.1280.777/0.23.1920.1057@0.23.1920.1057" timestamp="1578514957893" />
+    <state width="1878" height="300" key="GridCell.Tab.0.center/-1280.303.1280.777/0.23.1920.1057@0.23.1920.1057" timestamp="1582490662255" />
     <state width="1238" height="205" key="GridCell.Tab.0.center/0.23.1280.777@0.23.1280.777" timestamp="1578575915906" />
-    <state width="1238" height="205" key="GridCell.Tab.0.left" timestamp="1578575915906">
-      <screen x="0" y="23" width="1280" height="777" />
+    <state width="1878" height="300" key="GridCell.Tab.0.left" timestamp="1582490662255">
+      <screen x="0" y="23" width="1920" height="1057" />
     </state>
-    <state width="1878" height="301" key="GridCell.Tab.0.left/-1280.303.1280.777/0.23.1920.1057@0.23.1920.1057" timestamp="1578514957892" />
+    <state width="1878" height="300" key="GridCell.Tab.0.left/-1280.303.1280.777/0.23.1920.1057@0.23.1920.1057" timestamp="1582490662255" />
     <state width="1238" height="205" key="GridCell.Tab.0.left/0.23.1280.777@0.23.1280.777" timestamp="1578575915906" />
-    <state width="1238" height="205" key="GridCell.Tab.0.right" timestamp="1578575915907">
-      <screen x="0" y="23" width="1280" height="777" />
+    <state width="1878" height="300" key="GridCell.Tab.0.right" timestamp="1582490662256">
+      <screen x="0" y="23" width="1920" height="1057" />
     </state>
-    <state width="1878" height="301" key="GridCell.Tab.0.right/-1280.303.1280.777/0.23.1920.1057@0.23.1920.1057" timestamp="1578514957893" />
+    <state width="1878" height="300" key="GridCell.Tab.0.right/-1280.303.1280.777/0.23.1920.1057@0.23.1920.1057" timestamp="1582490662256" />
     <state width="1238" height="205" key="GridCell.Tab.0.right/0.23.1280.777@0.23.1280.777" timestamp="1578575915907" />
     <state width="1878" height="357" key="GridCell.Tab.1.bottom" timestamp="1578471803707">
       <screen x="0" y="23" width="1920" height="1057" />
@@ -202,10 +209,10 @@
       <screen x="0" y="23" width="1920" height="1057" />
     </state>
     <state width="1878" height="357" key="GridCell.Tab.1.right/-1280.303.1280.777/0.23.1920.1057@0.23.1920.1057" timestamp="1578471803707" />
-    <state x="298" y="78" key="SettingsEditor" timestamp="1578561416664">
-      <screen x="0" y="23" width="1280" height="777" />
+    <state x="469" y="190" key="SettingsEditor" timestamp="1582486947518">
+      <screen x="0" y="23" width="1920" height="1057" />
     </state>
-    <state x="469" y="190" key="SettingsEditor/-1280.303.1280.777/0.23.1920.1057@0.23.1920.1057" timestamp="1578509782072" />
+    <state x="469" y="190" key="SettingsEditor/-1280.303.1280.777/0.23.1920.1057@0.23.1920.1057" timestamp="1582486947518" />
     <state x="298" y="78" key="SettingsEditor/0.23.1280.777@0.23.1280.777" timestamp="1578561416664" />
     <state x="625" y="256" key="run.anything.popup" timestamp="1578472524945">
       <screen x="0" y="23" width="1920" height="1057" />
