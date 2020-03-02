@@ -146,8 +146,15 @@ public class StartAPI {
         post("/pseudoChannel",((request, response) -> {
             response.type("application/json"); //definiera svar som json
             PseudoChannelSelection selection = gson.fromJson(request.body(),PseudoChannelSelection.class);
-            return psuedoChannelController.getChannel(selection);
-        }), gson :: toJson);
+            String responseBody = psuedoChannelController.getChannel(selection);
+            if(responseBody.contains("statusCode")){
+                int statusCode = Integer.parseInt(responseBody.split(":")[1].substring(0,4));
+                response.status(statusCode);
+            } else {
+                response.status(200);
+            }
+            return responseBody;
+        }));
 
 
         //This endpoint handles the preflighting automatically done by browsers. Therefore it is not in the documentation.
