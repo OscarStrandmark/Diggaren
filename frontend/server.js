@@ -7,8 +7,8 @@ var httpRequest = require('xmlhttprequest').XMLHttpRequest;
 var bodyParser = require('body-parser');
 var fs = require('fs');
 
-var client_id = 'e9f8cccef4a84a71b2a925f5455fa84c'; // Your client id
-var client_secret = 'ed8e7c22f630455bbdcb3fdd46027456'; // Your secret
+var client_id = 'b93a3bb4485241cd99858866d868516e'; // Your client id
+var client_secret = '6966068a3e354b43a9830f6535f951a0'; // Your secret
 var redirect_uri = 'http://localhost:8888/callback'; // Your redirect uri
 
 /**
@@ -75,8 +75,8 @@ app.get('/channels', function(req, res) {
 app.get('/channelName', function(req, res) {
   let rawdata = fs.readFileSync('channels.json');
   let json = JSON.parse(rawdata);
-  let channelName = req.query.channelID;
-  res.send(json[channelName]);
+  let channelID = req.query.channelID;
+  res.send(json[channelID]);
 })
 
 app.post('/recommendation', function(req, res) {
@@ -130,29 +130,29 @@ app.post('/currently', function(req, res) {
 
 app.post('/addSong', function(req, res) {
   var http_request;
-    http_request = new httpRequest();
-    http_request.onreadystatechange = function () {
-      if(http_request.readyState==4 && http_request.status==200) {
-        res.set('Content-Type', 'application/json');
-        res.send(JSON.stringify(http_request.responseText));
-      }else if(http_request.readyState==4 && http_request.status!=200) {
-        if(http_request.status!=0) {
-          res.status(http_request.status);
-        } else {
-          res.status(500);
-        }
-        res.send();
+  http_request = new httpRequest();
+  http_request.onreadystatechange = function () {
+    if(http_request.readyState==4 && http_request.status==200) {
+      res.set('Content-Type', 'application/json');
+      res.send(JSON.stringify(http_request.responseText));
+    }else if(http_request.readyState==4 && http_request.status!=200) {
+      if(http_request.status!=0) {
+        res.status(http_request.status);
+      } else {
+        res.status(500);
       }
-    };
-    http_request.open("POST", "http://localhost:5050/spotify/playlist/add");
-    http_request.withCredentials = true;
-    http_request.setRequestHeader("Content-Type", "application/json");
-    http_request.send(JSON.stringify({
-      'playlist_id': req.body.playlist_id,
-      'auth': req.body.auth,
-      'track_id': req.body.track_id
-    }));
-  });
+      res.send();
+    }
+  };
+  http_request.open("POST", "http://localhost:5050/spotify/playlist/add");
+  http_request.withCredentials = true;
+  http_request.setRequestHeader("Content-Type", "application/json");
+  http_request.send(JSON.stringify({
+    'playlist_id': req.body.playlist_id,
+    'auth': req.body.auth,
+    'track_id': req.body.track_id
+  }));
+});
 
 app.post('/search', function(req, res) {
   var http_request;

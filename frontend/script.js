@@ -51,7 +51,7 @@ for (i = 0; i < coll.length; i++) {
 }
 
 function radio(channel, channelID) {
-    console.log('clicked channel');
+    console.log('Running radio on: ' + channel + ", " + channelID);
     setCookie('channelID', channelID);
     updateSongInfo();
     getRecommendation();
@@ -237,8 +237,8 @@ function addChannelButtons() {
                     if(channels.hasOwnProperty(channel)) {
                         let button = $('<div />', {
                             class: "channels",
-                            text: channel,
-                            value: channels[channel],
+                            text: channels[channel],
+                            value: channel,
                             on: {
                                 click: function() {
                                     radio(this.textContent, this.getAttribute('value'));
@@ -268,7 +268,7 @@ function addToPlaylist(trackID, playlistID) {
         url: '/addSong',
         type: 'POST',
         contentType: 'application/json',
-        body: JSON.stringify(data),
+        data: JSON.stringify(data),
         success: function(result) {
             alert('Song added to playlist');
         },
@@ -321,10 +321,14 @@ function getPlaylists(data){
 }
 
 function getChannelName(channelID) {
-    var channelName = $.get('/channelName?' + channelID)
+    var channelName = $.get('/channelName?channelID=' + channelID, function() {
+        console.log("Getting channel name");
+    })
         .done(function() {
-            return channelName.responseText;
+            radio(channelName.responseText, channelID);
         })
+
+        
 }
 
 //Changes the radio channel depending on the pseudo channel
@@ -339,7 +343,7 @@ function pseudoChannel(type) {
         }), 
         success: function(result){
             result = JSON.parse(result);
-            radio(getChannelName(result["channel"]), result['channel']);
+            getChannelName(result["channel"]);
         }, error: function(request, status, error){
             console.log("Pseudo channel: " + status);
         }
