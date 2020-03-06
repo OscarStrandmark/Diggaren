@@ -1,11 +1,9 @@
-var apiUrl = 'http://localhost:5050';
 setCookie('channelID',-1);
 
 // var previousSongs = {};
 var index = 0;
 var timeout;
 
-// previousSongs["songName"] = 'songID';
 
 /* Toggle between showing and hiding the navigation menu links when the user clicks on the hamburger menu / bar icon */
 function myFunction() {
@@ -18,6 +16,7 @@ function myFunction() {
 }
 
 
+// Adds a dropdown button
 var coll = document.getElementsByClassName("collapsible");
 var i;
 
@@ -33,7 +32,7 @@ for (i = 0; i < coll.length; i++) {
     });
 }
 
-
+// Adds a dropdown button
 var coll = document.getElementsByClassName("pcollapsible");
 
 var i;
@@ -50,11 +49,11 @@ for (i = 0; i < coll.length; i++) {
     });
 }
 
+// When changing the radiochannel updates the website with the correct information
 function radio(channel, channelID) {
     console.log('Running radio on: ' + channel + ", " + channelID);
     setCookie('channelID', channelID);
     updateSongInfo();
-    getRecommendation();
     $('.nowPlayingChannel').html('Spelas just nu på ' + channel + ':');
     console.log(getCookie('channelID'));
 }
@@ -129,28 +128,32 @@ function savetrackID(songName, artistName) {
     });	
 }
 
+// Request is sent to fetch recommendations based on the currently playing song
 function getRecommendation() {
-    // Request is sent to fetch recommendations based on the currently playing song
     console.log("Recommendation running on: " + getCookie('trackID'));
-    $.ajax({
-        url: '/recommendation',
-        type: 'POST',
-        data: JSON.stringify({
-            'auth': getCookie('accessToken'),
-            'trackID': getCookie('trackID')
-        }),
-        contentType: 'application/json',
-        success: function(result) {
-            result = JSON.parse(result);
-            var recommendedName = result['trackName'];
-            var recommendedArtist = result['artistName'];
-            console.log("Recommendation works");
-            $('#recommendedSong').html(recommendedName + ' - ' + recommendedArtist);
-        },
-        error:function(request, status, error){
-            console.log("Recommendation: " + status);
-        }
-    });
+    if(getCookie('trackID') != -1) {
+        $.ajax({
+            url: '/recommendation',
+            type: 'POST',
+            data: JSON.stringify({
+                'auth': getCookie('accessToken'),
+                'trackID': getCookie('trackID')
+            }),
+            contentType: 'application/json',
+            success: function(result) {
+                result = JSON.parse(result);
+                var recommendedName = result['trackName'];
+                var recommendedArtist = result['artistName'];
+                console.log("Recommendation works");
+                $('#recommendedSong').html(recommendedName + ' - ' + recommendedArtist);
+            },
+            error:function(request, status, error){
+                console.log("Recommendation: " + status);
+            }
+        });
+    } else {
+        $('#recommendedSong').html('Just nu spelas ingen musik.');
+    }
 }
 
 // Gets the currently playing song from the radio and presents it in the browser
@@ -180,7 +183,8 @@ function updateSongInfo() {
                 // updatePrevious();
             } 
             $('#nowPlaying').html(nowPlaying);
-            
+            getRecommendation();
+
         },
         error:function(request, status, error){
             console.log("Currently: " + status)
@@ -188,51 +192,16 @@ function updateSongInfo() {
     });
 }
 
-// function archiveSong(songName,artistName,trackID){
-//     var stringToShow = songName + ' - ' + artistName;
-//     previousSongs[stringToShow] = trackID;
-// }
 
-
-
-// function updatePrevious(playlists) {
-//     var i = 0;
-//     if(!playlists) {
-//         console.log('Could not fetch playlists');
-//     } else {
-//         for(var key in previousSongs){
-//             var dropdown = "<div class='dropdown'><button class='dropbtn' onclick='toggleDropdown()'>Lägg till låt</button><div id='myDropdown$(i)' class='dropdown-content'>";
-//             i++;
-            
-//             dropdown += '</div></div>';
-//             $('#previousSong').append(dropdown);
-//                     for(var playlist in playlists) {
-//                         btn = $('<div />', {
-//                             class: "spellista",
-//                             text : playlists.items[song].name,
-//                             type  : 'div',
-//                             value : playlists.items[song].id,
-//                             on    : {
-//                                 click: function() {
-//                                     addToPlaylist(getCookie('trackID'), this.value);
-//                                 }
-//                             }
-//                         });
-//                         $('.dropdown-content').append(btn);
-//                     }
-//         }
-
-//     }
-// }
-
+// Adds buttons for each radio channel to a dropdown menu
 function addChannelButtons() {
-    
-
+    // Requests a list of channels from the backend
     var getChannels = $.get('/channels', function() {
             console.log('channels success');
         })
             .done(function() {
                 var channels = JSON.parse(getChannels.responseText);
+                // Adds a button for each channel in the JSON object
                 for(var channel in channels) {
                     if(channels.hasOwnProperty(channel)) {
                         let button = $('<div />', {
@@ -278,11 +247,7 @@ function addToPlaylist(trackID, playlistID) {
     });
 }
 
-
-
-// When website is loaded, run function to create dropdown menu with playlists
-
-
+// Gets all the playlist of the users spotify account and creates a button for each list
 function getPlaylists(data){
     var response = null;
     $.ajax({
@@ -320,6 +285,7 @@ function getPlaylists(data){
     })
 }
 
+// Gets the name of the channel corresponding the the channel ID from the backend
 function getChannelName(channelID) {
     var channelName = $.get('/channelName?channelID=' + channelID, function() {
         console.log("Getting channel name");
@@ -352,7 +318,7 @@ function pseudoChannel(type) {
 }
 
 
-
+// When page is loaded, adds various buttons
 $(document).ready(function(){
     addChannelButtons();
     var access_token = getCookie("accessToken");

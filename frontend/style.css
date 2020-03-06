@@ -60,10 +60,10 @@ top: 50%;
 left: 50%;
 margin-left: -130px;
 margin-top: -70px;
-
+cursor: pointer;
 }
 
-#loginbutton a {
+#loginbutton {
 color: white;
 text-decoration: none;
 }
