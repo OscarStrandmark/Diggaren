@@ -1,10 +1,5 @@
 setCookie('channelID',-1);
 
-// var previousSongs = {};
-var index = 0;
-var timeout;
-
-
 /* Toggle between showing and hiding the navigation menu links when the user clicks on the hamburger menu / bar icon */
 function myFunction() {
     var x = document.getElementById("myLinks");
@@ -19,7 +14,6 @@ function myFunction() {
 // Adds a dropdown button
 var coll = document.getElementsByClassName("collapsible");
 var i;
-
 for (i = 0; i < coll.length; i++) {
     coll[i].addEventListener("click", function() {
         this.classList.toggle("active");
@@ -34,9 +28,7 @@ for (i = 0; i < coll.length; i++) {
 
 // Adds a dropdown button
 var coll = document.getElementsByClassName("pcollapsible");
-
 var i;
-
 for (i = 0; i < coll.length; i++) {
     coll[i].addEventListener("click", function() {
         this.classList.toggle("active");
@@ -119,7 +111,6 @@ function savetrackID(songName, artistName) {
             } else {
                 var trackID = json.tracks.items[0].id;
                 setCookie('trackID', trackID);
-                // archiveSong(songName,artistName,trackID);
             } 
         },
         error: function(request, status, error) {
@@ -173,14 +164,8 @@ function updateSongInfo() {
             if(result['playingSongName'] != null) {
                 var songName = result['playingSongName'];
                 var artistName = result['playingSongArtist'];
-                var startTime = new Date(result['nextSongStartTime']);
-                var startTime = startTime.getMilliseconds() - new Date().getMilliseconds;
                 nowPlaying = songName + ' - ' + artistName;
                 savetrackID(songName, artistName);
-                // window.clearTimeout(timeout);
-                // timeout = window.setTimeout(archiveSong(),startTime);
-
-                // updatePrevious();
             } 
             $('#nowPlaying').html(nowPlaying);
             getRecommendation();
@@ -275,7 +260,6 @@ function getPlaylists(data){
                 });
                 $('.playlists').append(btn);
             }
-            // updatePrevious(result.items);
             return result;
         },
         error: function(request, status, error){
@@ -293,8 +277,6 @@ function getChannelName(channelID) {
         .done(function() {
             radio(channelName.responseText, channelID);
         })
-
-        
 }
 
 //Changes the radio channel depending on the pseudo channel
@@ -323,5 +305,4 @@ $(document).ready(function(){
     addChannelButtons();
     var access_token = getCookie("accessToken");
     getPlaylists(access_token);
-    
 });
