@@ -269,7 +269,7 @@ function getPlaylists(data){
                     value : result.items[key].id,
                     on    : {
                         click: function() {
-                            addToPlaylist(getCookie('trackID'), result.items[key].id);
+                            addToPlaylist(getCookie('trackID'), this.getAttribute("value"));
                         }
                     }
                 });
