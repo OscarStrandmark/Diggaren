@@ -6,6 +6,7 @@ import com.google.gson.JsonParser;
 import models.ErrorObject;
 import models.PlayingSong;
 import org.springframework.http.*;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import models.SRMessage;
 
@@ -25,34 +26,39 @@ public class SRController {
      * time of next song starting.
      */
     public String getSongPlaying(SRMessage msg){
-        //getting the recommendation from spotify API by sending GET request
-        HttpHeaders headers = new HttpHeaders();
-        HttpEntity<String> reqEntity = new HttpEntity<String>("",headers);
-        ResponseEntity<String> resEntity = new RestTemplate().exchange("http://api.sr.se/api/v2/playlists/" +
-                        "rightnow?channelid="+msg.getChannelID()+"&format=JSON",
-                HttpMethod.GET, reqEntity, String.class);
-
-        if(resEntity.getStatusCode() != HttpStatus.OK){
-            return new Gson().toJson(new ErrorObject(resEntity.getStatusCodeValue()));
-        }
-
-        //Json parser to parse the API response in JSON
-        JsonParser parser = new JsonParser();
-        JsonObject playlistObject = parser.parse(resEntity.getBody()).getAsJsonObject().get("playlist").getAsJsonObject();
-
-        String currentSongName = null, currentSongArtist = null;
-
-        //protect from eventual null values if no song is currently plaing on radio channel
         try {
-            JsonObject currentSongObject = playlistObject.get("song").getAsJsonObject();
-            currentSongName = currentSongObject.get("title").getAsString();
-            currentSongArtist = currentSongObject.get("artist").getAsString();
-        }catch (NullPointerException e){}
+            //getting the recommendation from spotify API by sending GET request
+            HttpHeaders headers = new HttpHeaders();
+            HttpEntity<String> reqEntity = new HttpEntity<String>("",headers);
+            ResponseEntity<String> resEntity = new RestTemplate().exchange("http://api.sr.se/api/v2/playlists/" +
+                            "rightnow?channelid="+msg.getChannelID()+"&format=JSON",
+                    HttpMethod.GET, reqEntity, String.class);
+            System.out.println("request skickades");
+            System.out.println(resEntity.getStatusCode());
+            //Json parser to parse the API response in JSON
+            JsonParser parser = new JsonParser();
+            JsonObject playlistObject = parser.parse(resEntity.getBody()).getAsJsonObject().get("playlist").getAsJsonObject();
 
-        JsonObject nextSongObject = playlistObject.get("nextsong").getAsJsonObject();
-        String nextSongStartTime = nextSongObject.get("starttimeutc").getAsString();
-        PlayingSong song = new PlayingSong(currentSongName, currentSongArtist, nextSongStartTime);
+            String currentSongName = null, currentSongArtist = null;
 
-        return new Gson().toJson(song);
+            //protect from eventual null values if no song is currently plaing on radio channel
+            try {
+                JsonObject currentSongObject = playlistObject.get("song").getAsJsonObject();
+                currentSongName = currentSongObject.get("title").getAsString();
+                currentSongArtist = currentSongObject.get("artist").getAsString();
+            }catch (NullPointerException e){
+                return new Gson().toJson(new ErrorObject(400, "make sure channelID is a valid ID"));
+
+            }
+
+            JsonObject nextSongObject = playlistObject.get("nextsong").getAsJsonObject();
+            String nextSongStartTime = nextSongObject.get("starttimeutc").getAsString();
+            PlayingSong song = new PlayingSong(currentSongName, currentSongArtist, nextSongStartTime);
+
+            return new Gson().toJson(song);
+        }catch (RestClientException e){
+            int statusCode = Integer.parseInt(e.getMessage().substring(0, e.getMessage().indexOf(" ")));
+            return new Gson().toJson(new ErrorObject(statusCode, e.getMessage()));
+        }
     }
 }

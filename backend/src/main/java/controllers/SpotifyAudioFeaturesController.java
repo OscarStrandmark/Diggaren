@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import models.*;
 import org.springframework.http.*;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import models.TrackMessage;
 
@@ -27,35 +28,35 @@ public class SpotifyAudioFeaturesController {
      */
     public String getAudioFeatures(TrackMessage msg) {
         //getting the recommendation from spotify API by sending GET req
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization","Bearer "+msg.getAuth());
-        headers.add("Content-Type","application/json");
-        HttpEntity<String> reqEntity = new HttpEntity<String>("",headers);
-        ResponseEntity<String> resEntity = new RestTemplate().exchange(
-                "https://api.spotify.com/v1/audio-features/"+msg.getTrackID(),
-                HttpMethod.GET, reqEntity, String.class);
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("Authorization", "Bearer " + msg.getAuth());
+            headers.add("Content-Type", "application/json");
+            HttpEntity<String> reqEntity = new HttpEntity<String>("", headers);
+            ResponseEntity<String> resEntity = new RestTemplate().exchange(
+                    "https://api.spotify.com/v1/audio-features/" + msg.getTrackID(),
+                    HttpMethod.GET, reqEntity, String.class);
 
-        //Om fel statuskod, returnera errorobjektet.
-        if(resEntity.getStatusCode() != HttpStatus.OK){
-            return new Gson().toJson(new ErrorObject(resEntity.getStatusCodeValue()));
+            //Parse the answer in JSON
+            JsonParser parser = new JsonParser();
+
+            JsonObject featuresObject = parser.parse(resEntity.getBody()).getAsJsonObject();
+            AudioFeatures audioFeatures = new AudioFeatures(
+                    featuresObject.get("danceability").getAsString(),
+                    featuresObject.get("energy").getAsString(),
+                    featuresObject.get("loudness").getAsString(),
+                    featuresObject.get("speechiness").getAsString(),
+                    featuresObject.get("acousticness").getAsString(),
+                    featuresObject.get("instrumentalness").getAsString(),
+                    featuresObject.get("liveness").getAsString(),
+                    featuresObject.get("valence").getAsString(),
+                    featuresObject.get("tempo").getAsString()
+            );
+
+            return new Gson().toJson(audioFeatures);
+        }catch (RestClientException e){
+            int statusCode = Integer.parseInt(e.getMessage().substring(0, e.getMessage().indexOf(" ")));
+            return new Gson().toJson(new ErrorObject(statusCode, e.getMessage()));
         }
-
-        //Parse the answer in JSON
-        JsonParser parser = new JsonParser();
-
-        JsonObject featuresObject = parser.parse(resEntity.getBody()).getAsJsonObject();
-        AudioFeatures audioFeatures = new AudioFeatures(
-            featuresObject.get("danceability").getAsString(),
-                featuresObject.get("energy").getAsString(),
-                featuresObject.get("loudness").getAsString(),
-                featuresObject.get("speechiness").getAsString(),
-                featuresObject.get("acousticness").getAsString(),
-                featuresObject.get("instrumentalness").getAsString(),
-                featuresObject.get("liveness").getAsString(),
-                featuresObject.get("valence").getAsString(),
-                featuresObject.get("tempo").getAsString()
-        );
-
-        return new Gson().toJson(audioFeatures);
     }
 }

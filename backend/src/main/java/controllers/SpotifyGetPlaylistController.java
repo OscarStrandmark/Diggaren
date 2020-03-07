@@ -5,6 +5,7 @@ import com.google.gson.JsonParser;
 import models.ErrorObject;
 import models.GetPlaylist;
 import org.springframework.http.*;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -15,21 +16,22 @@ import org.springframework.web.client.RestTemplate;
  */
 public class SpotifyGetPlaylistController {
     public String getPlayList(String json) {
-        //Get inputdata
-        GetPlaylist getPlaylistData = new Gson().fromJson(json, GetPlaylist.class);
-        HttpHeaders headers = new HttpHeaders();
-        //set headers
-        headers.add("Authorization","Bearer " + getPlaylistData.getAuth());
-        headers.add("Content-Type","application/json");
+        try{
+            //Get inputdata
+            GetPlaylist getPlaylistData = new Gson().fromJson(json, GetPlaylist.class);
+            HttpHeaders headers = new HttpHeaders();
+            //set headers
+            headers.add("Authorization","Bearer " + getPlaylistData.getAuth());
+            headers.add("Content-Type","application/json");
 
-        //Get userId
-        HttpEntity<String> requestEntity = new HttpEntity<String>("",headers);
-        ResponseEntity<String> responseEntity = new RestTemplate().exchange("https://api.spotify.com/v1/me/playlists", HttpMethod.GET, requestEntity, String.class);
+            //Get userId
+            HttpEntity<String> requestEntity = new HttpEntity<String>("",headers);
+            ResponseEntity<String> responseEntity = new RestTemplate().exchange("https://api.spotify.com/v1/me/playlists", HttpMethod.GET, requestEntity, String.class);
 
-        if(responseEntity.getStatusCode() != HttpStatus.OK){
-            Gson gson = new Gson();
-            return gson.toJson( new ErrorObject(responseEntity.getStatusCodeValue()));
+            return responseEntity.getBody();
+        }catch (RestClientException e){
+            int statusCode = Integer.parseInt(e.getMessage().substring(0, e.getMessage().indexOf(" ")));
+            return new Gson().toJson(new ErrorObject(statusCode, e.getMessage()));
         }
-        return responseEntity.getBody();
     }
 }

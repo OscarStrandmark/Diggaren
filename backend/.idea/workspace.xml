@@ -6,7 +6,6 @@
       <change beforePath="$PROJECT_DIR$/src/main/java/controllers/controller.md" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/models/model.md" beforeDir="false" />
     </list>
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -53,18 +52,6 @@
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="settings.editor.selected.configurable" value="configurable.group.language" />
-  </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
   </component>
   <component name="RunManager" selected="Application.StartAPI">
     <configuration name="SRController" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
@@ -130,6 +117,18 @@
       </list>
     </recent_temporary>
   </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -161,11 +160,11 @@
       <screen x="0" y="23" width="1920" height="1057" />
     </state>
     <state x="424" y="213" key="#com.intellij.execution.impl.EditConfigurationsDialog/-1280.303.1280.777/0.23.1920.1057@0.23.1920.1057" timestamp="1578471424513" />
-    <state x="515" y="182" key="#com.intellij.ide.util.MemberChooser" timestamp="1578575581102">
+    <state x="515" y="182" key="#com.intellij.ide.util.MemberChooser" timestamp="1583499055117">
       <screen x="0" y="23" width="1280" height="777" />
     </state>
     <state x="773" y="274" key="#com.intellij.ide.util.MemberChooser/-1280.303.1280.777/0.23.1920.1057@0.23.1920.1057" timestamp="1578514866910" />
-    <state x="515" y="182" key="#com.intellij.ide.util.MemberChooser/0.23.1280.777@0.23.1280.777" timestamp="1578575581102" />
+    <state x="515" y="182" key="#com.intellij.ide.util.MemberChooser/0.23.1280.777@0.23.1280.777" timestamp="1583499055117" />
     <state x="697" y="342" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1578471415381">
       <screen x="0" y="23" width="1920" height="1057" />
     </state>
@@ -174,26 +173,26 @@
       <screen x="0" y="23" width="1280" height="777" />
     </state>
     <state x="0" y="23" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.23.1280.777@0.23.1280.777" timestamp="1578566420169" />
-    <state width="1878" height="300" key="GridCell.Tab.0.bottom" timestamp="1582490662256">
-      <screen x="0" y="23" width="1920" height="1057" />
+    <state width="1238" height="238" key="GridCell.Tab.0.bottom" timestamp="1583589224102">
+      <screen x="0" y="23" width="1280" height="777" />
     </state>
     <state width="1878" height="300" key="GridCell.Tab.0.bottom/-1280.303.1280.777/0.23.1920.1057@0.23.1920.1057" timestamp="1582490662256" />
-    <state width="1238" height="205" key="GridCell.Tab.0.bottom/0.23.1280.777@0.23.1280.777" timestamp="1578575915908" />
-    <state width="1878" height="300" key="GridCell.Tab.0.center" timestamp="1582490662255">
-      <screen x="0" y="23" width="1920" height="1057" />
+    <state width="1238" height="238" key="GridCell.Tab.0.bottom/0.23.1280.777@0.23.1280.777" timestamp="1583589224102" />
+    <state width="1238" height="238" key="GridCell.Tab.0.center" timestamp="1583589224102">
+      <screen x="0" y="23" width="1280" height="777" />
     </state>
     <state width="1878" height="300" key="GridCell.Tab.0.center/-1280.303.1280.777/0.23.1920.1057@0.23.1920.1057" timestamp="1582490662255" />
-    <state width="1238" height="205" key="GridCell.Tab.0.center/0.23.1280.777@0.23.1280.777" timestamp="1578575915906" />
-    <state width="1878" height="300" key="GridCell.Tab.0.left" timestamp="1582490662255">
-      <screen x="0" y="23" width="1920" height="1057" />
+    <state width="1238" height="238" key="GridCell.Tab.0.center/0.23.1280.777@0.23.1280.777" timestamp="1583589224102" />
+    <state width="1238" height="238" key="GridCell.Tab.0.left" timestamp="1583589224101">
+      <screen x="0" y="23" width="1280" height="777" />
     </state>
     <state width="1878" height="300" key="GridCell.Tab.0.left/-1280.303.1280.777/0.23.1920.1057@0.23.1920.1057" timestamp="1582490662255" />
-    <state width="1238" height="205" key="GridCell.Tab.0.left/0.23.1280.777@0.23.1280.777" timestamp="1578575915906" />
-    <state width="1878" height="300" key="GridCell.Tab.0.right" timestamp="1582490662256">
-      <screen x="0" y="23" width="1920" height="1057" />
+    <state width="1238" height="238" key="GridCell.Tab.0.left/0.23.1280.777@0.23.1280.777" timestamp="1583589224101" />
+    <state width="1238" height="238" key="GridCell.Tab.0.right" timestamp="1583589224102">
+      <screen x="0" y="23" width="1280" height="777" />
     </state>
     <state width="1878" height="300" key="GridCell.Tab.0.right/-1280.303.1280.777/0.23.1920.1057@0.23.1920.1057" timestamp="1582490662256" />
-    <state width="1238" height="205" key="GridCell.Tab.0.right/0.23.1280.777@0.23.1280.777" timestamp="1578575915907" />
+    <state width="1238" height="238" key="GridCell.Tab.0.right/0.23.1280.777@0.23.1280.777" timestamp="1583589224102" />
     <state width="1878" height="357" key="GridCell.Tab.1.bottom" timestamp="1578471803707">
       <screen x="0" y="23" width="1920" height="1057" />
     </state>

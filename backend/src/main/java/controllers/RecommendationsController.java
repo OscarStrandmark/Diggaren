@@ -3,6 +3,7 @@ package controllers;
 import com.google.gson.*;
 import models.*;
 import org.springframework.http.*;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import models.TrackMessage;
 
@@ -25,19 +26,21 @@ public class RecommendationsController {
      * from Spotify API
      */
     public String getRecommendation(TrackMessage msg) {
+        ResponseEntity<String> resEntity;
         Gson gson = new Gson();
         //getting the recommendation from spotify API by sending GET req
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization","Bearer "+msg.getAuth());
-        headers.add("Content-Type","application/json");
-        HttpEntity<String> reqEntity = new HttpEntity<String>("",headers);
-        ResponseEntity<String> resEntity = new RestTemplate().exchange("https://api.spotify.com/v1/recommendations?" +
-                        "limit=1&market=SE&seed_tracks="+ msg.getTrackID() +
-                        "&min_energy=0.4&min_popularity=50",
-                HttpMethod.GET, reqEntity, String.class);
-
-        if(resEntity.getStatusCode() != HttpStatus.OK){
-            return gson.toJson( new ErrorObject(resEntity.getStatusCodeValue()));
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("Authorization", "Bearer " + msg.getAuth());
+            headers.add("Content-Type", "application/json");
+            HttpEntity<String> reqEntity = new HttpEntity<String>("", headers);
+            resEntity = new RestTemplate().exchange("https://api.spotify.com/v1/recommendations?" +
+                            "limit=1&market=SE&seed_tracks=" + msg.getTrackID() +
+                            "&min_energy=0.4&min_popularity=50",
+                    HttpMethod.GET, reqEntity, String.class);
+        }catch (RestClientException e){
+            int statusCode = Integer.parseInt(e.getMessage().substring(0, e.getMessage().indexOf(" ")));
+            return new Gson().toJson(new ErrorObject(statusCode, e.getMessage()));
         }
 
         //since the response is a nestled json object and we need to convert it to an map and fetch the wanted data

@@ -1,8 +1,6 @@
 import com.google.gson.Gson;
 import controllers.*;
-import models.PseudoChannelSelection;
-import models.SRMessage;
-import models.TrackMessage;
+import models.*;
 import util.CorsFilter;
 
 import static spark.Spark.*;
@@ -36,8 +34,9 @@ public class StartAPI {
                 response.type("application/json"); //definiera svar som json
                 String responseBody = spotifySearchController.search(request.body());
                 if(responseBody.contains("statusCode")){
-                    int statusCode = Integer.parseInt(responseBody.split(":")[1].substring(0,4));
-                    response.status(statusCode);
+                    ErrorObject errorObject = new Gson().fromJson(responseBody, ErrorObject.class);
+                    response.status(errorObject.getStatusCode());
+                    response.body(errorObject.getErrorMessage());
                 } else {
                     response.status(200);
                 }
@@ -48,8 +47,9 @@ public class StartAPI {
                 response.type("application/json"); //definiera svar som json
                 String responseBody = addToLibraryController.addToLibrary(request.body());
                 if(responseBody.contains("statusCode")){
-                    int statusCode = Integer.parseInt(responseBody.split(":")[1].substring(0,4));
-                    response.status(statusCode);
+                    ErrorObject errorObject = new Gson().fromJson(responseBody, ErrorObject.class);
+                    response.status(errorObject.getStatusCode());
+                    response.body(errorObject.getErrorMessage());
                 } else {
                     response.status(200);
                 }
@@ -62,8 +62,9 @@ public class StartAPI {
                     response.type("application/json"); //definiera svar som json
                     String responseBody = spotifyGetPlaylist.getPlayList(request.body());
                     if(responseBody.contains("statusCode")){
-                        int statusCode = Integer.parseInt(responseBody.split(":")[1].substring(0,4));
-                        response.status(statusCode);
+                        ErrorObject errorObject = new Gson().fromJson(responseBody, ErrorObject.class);
+                        response.status(errorObject.getStatusCode());
+                        response.body(errorObject.getErrorMessage());
                     } else {
                         response.status(200);
                     }
@@ -74,12 +75,13 @@ public class StartAPI {
                     response.type("application/json"); //definiera svar som json
                     String responseBody = spotifyAddToPlaylistController.addToPlayList(request.body());
                     if(responseBody.contains("statusCode")){
-                        int statusCode = Integer.parseInt(responseBody.split(":")[1].substring(0,4));
-                        response.status(statusCode);
+                        ErrorObject errorObject = new Gson().fromJson(responseBody, ErrorObject.class);
+                        response.status(errorObject.getStatusCode());
+                        response.body(errorObject.getErrorMessage());
                     } else {
                         response.status(200);
                     }
-                    return responseBody;
+                    return response;
                 });
             });
             //Get album, already converted to JSON
@@ -87,8 +89,9 @@ public class StartAPI {
                 response.type("application/json"); //definiera svar som json
                 String responseBody = getAlbumController.getAlbum(request.body());
                 if(responseBody.contains("statusCode")){
-                    int statusCode = Integer.parseInt(responseBody.split(":")[1].substring(0,4));
-                    response.status(statusCode);
+                    ErrorObject errorObject = new Gson().fromJson(responseBody, ErrorObject.class);
+                    response.status(errorObject.getStatusCode());
+                    response.body(errorObject.getErrorMessage());
                 } else {
                     response.status(200);
                 }
@@ -104,8 +107,9 @@ public class StartAPI {
                 System.out.println("trackID " + msg.getTrackID());
                 String responseBody = recommendationsController.getRecommendation(msg);
                 if(responseBody.contains("statusCode")){
-                    int statusCode = Integer.parseInt(responseBody.split(":")[1].substring(0,4));
-                    response.status(statusCode);
+                    ErrorObject errorObject = new Gson().fromJson(responseBody, ErrorObject.class);
+                    response.status(errorObject.getStatusCode());
+                    response.body(errorObject.getErrorMessage());
                 } else {
                     response.status(200);
                 }
@@ -118,8 +122,9 @@ public class StartAPI {
                 TrackMessage msg = gson.fromJson(request.body(), TrackMessage.class); //hämta json object från body som ett definierat objekt
                 String responseBody = audioFeaturesController.getAudioFeatures(msg);
                 if(responseBody.contains("statusCode")){
-                    int statusCode = Integer.parseInt(responseBody.split(":")[1].substring(0,4));
-                    response.status(statusCode);
+                    ErrorObject errorObject = new Gson().fromJson(responseBody, ErrorObject.class);
+                    response.status(errorObject.getStatusCode());
+                    response.body(errorObject.getErrorMessage());
                 } else {
                     response.status(200);
                 }
@@ -134,8 +139,9 @@ public class StartAPI {
                 SRMessage msg = gson.fromJson(request.body(), SRMessage.class); //hämta json object från body som ett definierat objekt
                 String responseBody = srController.getSongPlaying(msg);
                 if(responseBody.contains("statusCode")){
-                    int statusCode = Integer.parseInt(responseBody.split(":")[1].substring(0,4));
-                    response.status(statusCode);
+                    ErrorObject errorObject = new Gson().fromJson(responseBody, ErrorObject.class);
+                    response.status(errorObject.getStatusCode());
+                    response.body(errorObject.getErrorMessage());
                 } else {
                     response.status(200);
                 }
@@ -148,8 +154,9 @@ public class StartAPI {
             PseudoChannelSelection selection = gson.fromJson(request.body(),PseudoChannelSelection.class);
             String responseBody = psuedoChannelController.getChannel(selection);
             if(responseBody.contains("statusCode")){
-                int statusCode = Integer.parseInt(responseBody.split(":")[1].substring(0,4));
-                response.status(statusCode);
+                ErrorObject errorObject = new Gson().fromJson(responseBody, ErrorObject.class);
+                response.status(errorObject.getStatusCode());
+                response.body(errorObject.getErrorMessage());
             } else {
                 response.status(200);
             }
