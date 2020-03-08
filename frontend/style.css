@@ -2,6 +2,11 @@
   background-color: rgb(174, 171, 171);
 }
 
+#nowPlaying {
+  display: flex;
+  justify-content: center;
+}
+
 .drop-down{
   position: relative;
   display: inline-block;
@@ -27,10 +32,6 @@
 }
 
 #mylinks{
-  display: inline;
-}
-
-#nowPlaying {
   display: inline;
 }
 
