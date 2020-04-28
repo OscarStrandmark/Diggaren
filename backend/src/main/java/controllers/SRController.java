@@ -48,12 +48,25 @@ public class SRController {
                 currentSongArtist = currentSongObject.get("artist").getAsString();
             }catch (NullPointerException e){
                 return new Gson().toJson(new ErrorObject(400, "make sure channelID is a valid ID"));
-
             }
 
-            JsonObject nextSongObject = playlistObject.get("nextsong").getAsJsonObject();
-            String nextSongStartTime = nextSongObject.get("starttimeutc").getAsString();
-            PlayingSong song = new PlayingSong(currentSongName, currentSongArtist, nextSongStartTime);
+            //If there is no next song catch it and set time of next song to -1
+            JsonObject nextSongObject = null;
+            String nextSongStartTime;
+            PlayingSong song = null;
+            boolean nextSongExists = true;
+            try{
+                nextSongObject = playlistObject.get("nextsong").getAsJsonObject();
+            } catch (Exception e){
+                nextSongExists = false;
+            }
+            if(nextSongExists){
+                nextSongStartTime = nextSongObject.get("starttimeutc").getAsString();
+                song = new PlayingSong(currentSongName, currentSongArtist, nextSongStartTime);
+            } else {
+                song = new PlayingSong(currentSongName,currentSongArtist,"-1");
+            }
+
 
             return new Gson().toJson(song);
         }catch (RestClientException e){
