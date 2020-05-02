@@ -187,6 +187,8 @@ function updateSongInfo() {
 
         },
         error:function(request, status, error){
+            $('#nowPlaying').html('Just nu spelas ingenting.');
+            $('#recommendedSong').html('Just nu spelas ingen musik.');
             console.log("Currently: " + status)
         }
     });
