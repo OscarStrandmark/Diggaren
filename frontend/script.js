@@ -264,14 +264,16 @@ function getPlaylists(data){
             console.log("Fetch works: " + result);
             for(var key in result.items) {
                 console.log('adding playlist');
+                var playlistID = String(result.items[key].id);
+                console.log(playlistID);
                 btn = $('<div />', {
                     class: "spellista",
                     text : result.items[key].name,
                     type  : 'div',
-                    value : result.items[key].id,
+                    value : playlistID,
                     on    : {
                         click: function() {
-                            addToPlaylist(getCookie('trackID'), result.items[key].id);
+                            addToPlaylist(getCookie('trackID'), this.getAttribute('value'));
                         }
                     }
                 });
