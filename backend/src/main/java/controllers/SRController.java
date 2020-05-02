@@ -47,7 +47,7 @@ public class SRController {
                 currentSongName = currentSongObject.get("title").getAsString();
                 currentSongArtist = currentSongObject.get("artist").getAsString();
             }catch (NullPointerException e){
-                return new Gson().toJson(new ErrorObject(400, "make sure channelID is a valid ID"));
+                return new Gson().toJson(new ErrorObject(400, "channelID is a not a valid ID OR there is no song currently playing,"));
             }
 
             //If there is no next song catch it and set time of next song to -1
